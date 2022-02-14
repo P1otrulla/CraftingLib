@@ -35,6 +35,9 @@ public final class CraftingListeners implements Listener {
                     if (inventoryItem.getAmount() < itemStack.getAmount()) {
                         event.setCancelled(true);
                     }
+                    if (!inventoryItem.getItemMeta().equals(itemStack.getItemMeta())){
+                        event.setCancelled(true);
+                    }
                 }
             }
             inventory.setResult(new ItemStack(Material.AIR));

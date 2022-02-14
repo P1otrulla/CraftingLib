@@ -38,31 +38,4 @@ public final class CraftingUtils {
         item.setAmount(item.getAmount() - amount);
         inventory.setItem(slot, item);
     }
-
-    // Metoda zapożyczona z FunnyGuilds!
-    public static ItemStack parseItem(String string) {
-        String[] split = string.split(" ");
-        String[] typeSplit = split[1].split(":");
-        String subtype = typeSplit.length > 1 ? typeSplit[1] : "0";
-
-        Option<Material> material = Option.of(Material.matchMaterial(typeSplit[0]));
-
-        int stack;
-        int data;
-
-        try {
-            stack = Integer.parseInt(split[0]);
-            data = Integer.parseInt(subtype);
-        }
-        catch (NumberFormatException e) {
-            stack = 1;
-            data = 0;
-        }
-
-        if (!material.isPresent()){
-            material = Option.of(Material.DIRT);
-        }
-
-        return new ItemStack(material.get(), stack, (short)data);
-    }
 }
