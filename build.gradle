@@ -1,0 +1,65 @@
+plugins {
+    id 'idea'
+    id 'java-library'
+    id 'maven-publish'
+    id "com.github.johnrengelman.shadow" version "7.1.2"
+}
+
+group 'net.osnixer'
+version '1.0'
+
+repositories {
+    gradlePluginPortal()
+    maven { url = "https://papermc.io/repo/repository/maven-public/" }
+    maven { url = "https://repo.panda-lang.org/releases" }
+
+    mavenCentral()
+}
+
+publishing {
+    repositories {
+        mavenLocal()
+
+//        maven {
+//            name = "eternalcode-repository"
+//            url = uri("https://repo.eternalcode.pl/releases")
+//            credentials {
+//                username = "$eternalUser"
+//                password = "$eternalPass"
+//            }
+//        }
+//        publications {
+//            libraries(MavenPublication) {
+//                artifactId = 'craftinglib'
+//                from components.java
+//            }
+//        }
+    }
+}
+
+dependencies {
+    // paper api
+    compileOnly "io.papermc.paper:paper-api:1.18.1-R0.1-SNAPSHOT"
+
+    // expresslibe
+    implementation "org.panda-lang:expressible:1.1.9"
+}
+
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+    options.release.set(17)
+}
+
+shadowJar {
+    archiveFileName = "CraftingLib v${project.version}.jar"
+
+    exclude "org/intellij/lang/annotations/**"
+    exclude "org/jetbrains/annotations/**"
+    exclude "javax/**"
+
+    relocate "panda", "net.osnixer.craftinglib.libs.panda"
+}
