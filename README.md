@@ -65,7 +65,7 @@ CraftingManager craftingManager = craftingLib.getManager();
 
 ## CraftingUtils
 
-**CraftingUtils#removeRecipe
+**CraftingUtils#removeRecipe**
 > It is a method that remove a recipe from server without restart!
 
 ## CraftingException
