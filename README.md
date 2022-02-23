@@ -20,11 +20,11 @@ maven {
 <dependency>
   <groupId>net.osnixer</groupId>
   <artifactId>craftinglib</artifactId>
-  <version>1.0</version>
+  <version>1.1</version>
 </dependency>
 ```
 ```groovy
-implementation 'net.osnixer:craftinglib:1.0'
+implementation 'net.osnixer:craftinglib:1.1'
 ```
 
 ### How to use?
@@ -35,7 +35,7 @@ CraftingLib craftingLib = new CraftingLib(instance);
 
 Getting CraftingManager
 ```java
-CraftingManager craftingManager = craftingLib.getManager();
+CraftingManager craftingManager = craftingLib.getCraftingManager();
 ```
 
 ## CraftingManager
@@ -73,3 +73,4 @@ CraftingManager craftingManager = craftingLib.getManager();
 
 ## See (Important dependencies used)
 - [panda-lang/expressible](https://github.com/panda-lang/expressible)
+- [projectlombok/lombok](https://github.com/projectlombok/lombok)
