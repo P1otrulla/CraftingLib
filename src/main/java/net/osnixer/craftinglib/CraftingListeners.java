@@ -1,15 +1,19 @@
 package net.osnixer.craftinglib;
 
 import org.bukkit.Material;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.inventory.CraftingInventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Recipe;
 import panda.std.Option;
 
-public final class CraftingListeners implements Listener {
+public class CraftingListeners implements Listener {
 
     private final CraftingManager manager;
 
@@ -27,7 +31,7 @@ public final class CraftingListeners implements Listener {
             for (int i = 1; i <= 9; i++) {
                 if (inventory.getItem(i) != null) {
                     ItemStack inventoryItem = inventory.getItem(i);
-                    ItemStack itemStack = crafting.getItems()[i - 1];
+                    ItemStack itemStack = crafting.getItemArray()[i - 1];
 
                     if (inventoryItem.getType() != itemStack.getType()) {
                         event.setCancelled(true);
@@ -41,9 +45,16 @@ public final class CraftingListeners implements Listener {
                 }
             }
             inventory.setResult(new ItemStack(Material.AIR));
-            if (!event.isCancelled()){
+            if (!event.isCancelled()) {
+                if (event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY) {
+                    event.setCancelled(true);
+                    inventory.setResult(crafting.getResult());
+
+                    return;
+                }
+
                 for (int i = 1; i <= 9; i++) {
-                    CraftingUtils.removeItem(inventory, i, crafting.getItems()[i - 1].getAmount() - 1);
+                    CraftingUtils.removeItem(inventory, i, crafting.getItemArray()[i - 1].getAmount() - 1);
                     inventory.setResult(crafting.getResult());
                 }
             }
@@ -51,7 +62,13 @@ public final class CraftingListeners implements Listener {
     }
 
     @EventHandler
-    public void onPrepare(PrepareItemCraftEvent event){
+    public void onPrepare(PrepareItemCraftEvent event) {
+        Option<Recipe> recipeOption = Option.of(event.getRecipe());
+
+        if (recipeOption.isEmpty()) {
+            return;
+        }
+
         Option<ItemStack> resultOption = Option.of(event.getRecipe().getResult());
 
         resultOption.peek(result -> {
@@ -62,7 +79,7 @@ public final class CraftingListeners implements Listener {
                 for (int i = 1; i <= 9; i++) {
                     if (inventory.getItem(i) != null) {
                         ItemStack inventoryItem = inventory.getItem(i);
-                        ItemStack itemStack = crafting.getItems()[i - 1];
+                        ItemStack itemStack = crafting.getItemArray()[i - 1];
 
                         if (inventoryItem.getType() != itemStack.getType()) {
                             inventory.setResult(new ItemStack(Material.AIR));
@@ -70,7 +87,7 @@ public final class CraftingListeners implements Listener {
                         if (inventoryItem.getAmount() < itemStack.getAmount()) {
                             inventory.setResult(new ItemStack(Material.AIR));
                         }
-                        if (!inventoryItem.getItemMeta().equals(itemStack.getItemMeta())){
+                        if (!inventoryItem.getItemMeta().equals(itemStack.getItemMeta())) {
                             inventory.setResult(new ItemStack(Material.AIR));
                         }
                     }

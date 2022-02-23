@@ -1,21 +1,23 @@
 package net.osnixer.craftinglib;
 
+import lombok.experimental.UtilityClass;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
-import panda.std.Option;
 
 import java.util.Iterator;
 
-public final class CraftingUtils {
+@UtilityClass
+public class CraftingUtils {
 
     public static void removeRecipe(ItemStack itemStack){
-        final Iterator<Recipe> recipes = Bukkit.recipeIterator();
+        Iterator<Recipe> recipes = Bukkit.recipeIterator();
 
         while (recipes.hasNext()){
-            final Recipe recipe = recipes.next();
+            Recipe recipe = recipes.next();
+
             if (recipe != null && recipe.getResult().isSimilar(itemStack)){
                 recipes.remove();
             }
@@ -26,7 +28,7 @@ public final class CraftingUtils {
         if (inventory.getItem(slot) == null) {
             return;
         }
-        final ItemStack item = inventory.getItem(slot).clone();
+        ItemStack item = inventory.getItem(slot).clone();
 
         if (item == null || item.getType().equals(Material.AIR)) {
             return;

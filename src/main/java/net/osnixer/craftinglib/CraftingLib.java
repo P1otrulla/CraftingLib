@@ -1,25 +1,38 @@
 package net.osnixer.craftinglib;
 
+import lombok.Getter;
+import net.osnixer.craftinglib.recipe.NewRecipe;
+import net.osnixer.craftinglib.recipe.NewerRecipe;
+import net.osnixer.craftinglib.recipe.OldRecipe;
+import net.osnixer.craftinglib.recipe.RecipeNMS;
 import org.bukkit.plugin.Plugin;
 
 public class CraftingLib {
 
-    private final Plugin plugin;
-    private final CraftingManager craftingManager;
+    @Getter private final CraftingManager craftingManager;
+    @Getter private static CraftingLib instance;
+    @Getter private final RecipeNMS recipeNMS;
+    @Getter private final Plugin plugin;
 
     public CraftingLib(Plugin plugin){
+        CraftingLib.instance = this;
         this.plugin = plugin;
 
         this.craftingManager = new CraftingManager();
 
         plugin.getServer().getPluginManager().registerEvents(new CraftingListeners(this.craftingManager), plugin);
+
+        this.recipeNMS = this.detectVersion(plugin);
+
     }
 
-    public CraftingManager getManager() {
-        return craftingManager;
-    }
+    private RecipeNMS detectVersion(Plugin plugin) {
+        String version = plugin.getServer().getClass().getName().split("\\.")[3];
 
-    public Plugin getPlugin() {
-        return plugin;
+        switch (version) {
+            case "v1_8_R1": case "v1_8_R2": case "v1_8_R3": case "v1_9_R1": case "v1_9_R2": case "v1_10_R1": case "v1_11_R1": return new OldRecipe();
+            case "v1_12_R1": return new NewRecipe();
+            default: return new NewerRecipe();
+        }
     }
 }

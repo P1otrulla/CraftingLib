@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class CraftingManager {
 
-    private Map<String, Crafting> craftingMap = new ConcurrentHashMap<>();
+    private final Map<String, Crafting> craftingMap = new ConcurrentHashMap<>();
 
     public void createCrafting(String craftingName, Crafting crafting){
         if (this.craftingMap.containsKey(craftingName)){
@@ -23,7 +23,7 @@ public class CraftingManager {
         if (!this.craftingMap.containsKey(craftingName)){
             throw new CraftingException("Crafting with this name not exists");
         }
-        final Crafting crafting = this.craftingMap.get(craftingName);
+        Crafting crafting = this.craftingMap.get(craftingName);
 
         this.craftingMap.remove(craftingName);
         CraftingUtils.removeRecipe(crafting.getResult());
