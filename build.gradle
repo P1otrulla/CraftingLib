@@ -6,7 +6,7 @@ plugins {
 }
 
 group 'net.osnixer'
-version '1.1'
+version '1.2'
 
 repositories {
     gradlePluginPortal()
@@ -55,7 +55,7 @@ dependencies {
     compileOnly "org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT"
 
     // expresslibe
-    implementation "org.panda-lang:expressible:1.1.9"
+    implementation "org.panda-lang:expressible:1.1.16"
 }
 
 tasks.withType(JavaCompile) {

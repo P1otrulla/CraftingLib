@@ -35,11 +35,11 @@ public class CraftingManager {
                 .head();
     }
 
-    public Option<Crafting> findCrafting(String itemStack){
-        if (this.craftingMap.get(itemStack) == null){
+    public Option<Crafting> findCrafting(String craftingName){
+        if (this.craftingMap.get(craftingName) == null){
             return Option.none();
         }
-        return Option.of(this.craftingMap.get(itemStack));
+        return Option.of(this.craftingMap.get(craftingName));
     }
 
     public Map<String, Crafting> get() {
