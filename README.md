@@ -20,11 +20,11 @@ maven {
 <dependency>
   <groupId>net.osnixer</groupId>
   <artifactId>craftinglib</artifactId>
-  <version>1.1</version>
+  <version>1.2</version>
 </dependency>
 ```
 ```groovy
-implementation 'net.osnixer:craftinglib:1.1'
+implementation 'net.osnixer:craftinglib:1.2'
 ```
 
 ### How to use?
