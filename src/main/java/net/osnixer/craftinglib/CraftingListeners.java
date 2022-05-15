@@ -13,6 +13,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import panda.std.Option;
 
+import java.util.Optional;
+
 public class CraftingListeners implements Listener {
 
     private final CraftingManager manager;
@@ -24,10 +26,10 @@ public class CraftingListeners implements Listener {
     @EventHandler
     public void onCraft(CraftItemEvent event){
         ItemStack result = event.getRecipe().getResult();
-        Option<Crafting> craftingOption = this.manager.findCrafting(result);
+        Optional<Crafting> craftingOptional = this.manager.findCrafting(result);
         CraftingInventory inventory = event.getInventory();
 
-        craftingOption.filter(Crafting::isCustom).peek(crafting -> {
+        craftingOptional.filter(Crafting::isCustom).ifPresent(crafting -> {
             for (int i = 1; i <= 9; i++) {
                 if (inventory.getItem(i) != null) {
                     ItemStack inventoryItem = inventory.getItem(i);
@@ -36,15 +38,19 @@ public class CraftingListeners implements Listener {
                     if (inventoryItem.getType() != itemStack.getType()) {
                         event.setCancelled(true);
                     }
+
                     if (inventoryItem.getAmount() < itemStack.getAmount()) {
                         event.setCancelled(true);
                     }
+
                     if (!inventoryItem.getItemMeta().equals(itemStack.getItemMeta())){
                         event.setCancelled(true);
                     }
                 }
             }
+
             inventory.setResult(new ItemStack(Material.AIR));
+
             if (!event.isCancelled()) {
                 if (event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY) {
                     event.setCancelled(true);
@@ -54,7 +60,9 @@ public class CraftingListeners implements Listener {
                 }
 
                 for (int i = 1; i <= 9; i++) {
-                    CraftingUtils.removeItem(inventory, i, crafting.getItemArray()[i - 1].getAmount() - 1);
+                    int amount = crafting.getItemArray()[i - 1].getAmount() - 1;
+
+                    CraftingUtils.removeItem(inventory, i, amount);
                     inventory.setResult(crafting.getResult());
                 }
             }
@@ -63,36 +71,40 @@ public class CraftingListeners implements Listener {
 
     @EventHandler
     public void onPrepare(PrepareItemCraftEvent event) {
-        Option<Recipe> recipeOption = Option.of(event.getRecipe());
+        Recipe recipe = event.getRecipe();
 
-        if (recipeOption.isEmpty()) {
+        if (recipe == null) {
             return;
         }
 
-        Option<ItemStack> resultOption = Option.of(event.getRecipe().getResult());
+        ItemStack result = recipe.getResult();
 
-        resultOption.peek(result -> {
-            Option<Crafting> craftingOption = this.manager.findCrafting(result);
-            CraftingInventory inventory = event.getInventory();
+        if (result == null) {
+            return;
+        }
 
-            craftingOption.filter(Crafting::isCustom).peek(crafting -> {
-                for (int i = 1; i <= 9; i++) {
-                    if (inventory.getItem(i) != null) {
-                        ItemStack inventoryItem = inventory.getItem(i);
-                        ItemStack itemStack = crafting.getItemArray()[i - 1];
+        Optional<Crafting> craftingOptional = this.manager.findCrafting(result);
+        CraftingInventory inventory = event.getInventory();
 
-                        if (inventoryItem.getType() != itemStack.getType()) {
-                            inventory.setResult(new ItemStack(Material.AIR));
-                        }
-                        if (inventoryItem.getAmount() < itemStack.getAmount()) {
-                            inventory.setResult(new ItemStack(Material.AIR));
-                        }
-                        if (!inventoryItem.getItemMeta().equals(itemStack.getItemMeta())) {
-                            inventory.setResult(new ItemStack(Material.AIR));
-                        }
+        craftingOptional.filter(Crafting::isCustom).ifPresent(crafting -> {
+            for (int i = 1; i <= 9; i++) {
+                if (inventory.getItem(i) != null) {
+                    ItemStack inventoryItem = inventory.getItem(i);
+                    ItemStack itemStack = crafting.getItemArray()[i - 1];
+
+                    if (inventoryItem.getType() != itemStack.getType()) {
+                        inventory.setResult(new ItemStack(Material.AIR));
+                    }
+
+                    if (inventoryItem.getAmount() < itemStack.getAmount()) {
+                        inventory.setResult(new ItemStack(Material.AIR));
+                    }
+
+                    if (!inventoryItem.getItemMeta().equals(itemStack.getItemMeta())) {
+                        inventory.setResult(new ItemStack(Material.AIR));
                     }
                 }
-            });
+            }
         });
     }
 }

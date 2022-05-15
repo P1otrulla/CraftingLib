@@ -13,10 +13,10 @@ public final class CraftingUtils {
     public static void removeRecipe(ItemStack itemStack){
         Iterator<Recipe> recipes = Bukkit.recipeIterator();
 
-        while (recipes.hasNext()){
+        while (recipes.hasNext()) {
             Recipe recipe = recipes.next();
 
-            if (recipe != null && recipe.getResult().isSimilar(itemStack)){
+            if (recipe != null && recipe.getResult().isSimilar(itemStack)) {
                 recipes.remove();
             }
         }
@@ -26,15 +26,18 @@ public final class CraftingUtils {
         if (inventory.getItem(slot) == null) {
             return;
         }
+
         ItemStack item = inventory.getItem(slot).clone();
 
         if (item == null || item.getType().equals(Material.AIR)) {
             return;
         }
+
         if (item.getAmount() <= amount) {
             inventory.setItem(slot, new ItemStack(Material.AIR));
             return;
         }
+
         item.setAmount(item.getAmount() - amount);
         inventory.setItem(slot, item);
     }

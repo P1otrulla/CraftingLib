@@ -26,11 +26,12 @@ public class Crafting {
             recipeNMS.setIngredient(recipe, chars[i], itemArray[i]);
         }
 
-        for (ItemStack itemStack : itemArray){
+        for (ItemStack itemStack : itemArray) {
             if (itemStack != null && itemStack.hasItemMeta()){
                 this.custom = true;
                 break;
             }
+
             if (itemStack.getAmount() > 1) {
                 this.custom = true;
                 break;

@@ -1,6 +1,5 @@
 package net.osnixer.craftinglib;
 
-import lombok.Getter;
 import net.osnixer.craftinglib.recipe.NewRecipe;
 import net.osnixer.craftinglib.recipe.NewerRecipe;
 import net.osnixer.craftinglib.recipe.OldRecipe;
@@ -15,7 +14,8 @@ public class CraftingLib {
     private final Plugin plugin;
 
     public CraftingLib(Plugin plugin){
-        CraftingLib.instance = this;
+        instance = this;
+
         this.plugin = plugin;
 
         this.craftingManager = new CraftingManager();
@@ -30,9 +30,23 @@ public class CraftingLib {
         String version = plugin.getServer().getClass().getName().split("\\.")[3];
 
         switch (version) {
-            case "v1_8_R1": case "v1_8_R2": case "v1_8_R3": case "v1_9_R1": case "v1_9_R2": case "v1_10_R1": case "v1_11_R1": return new OldRecipe();
-            case "v1_12_R1": return new NewRecipe();
-            default: return new NewerRecipe();
+            case "v1_8_R1":
+            case "v1_8_R2":
+            case "v1_8_R3":
+            case "v1_9_R1":
+            case "v1_9_R2":
+            case "v1_10_R1":
+            case "v1_11_R1": {
+                return new OldRecipe();
+            }
+
+            case "v1_12_R1": {
+                return new NewRecipe();
+            }
+
+            default: {
+                return new NewerRecipe();
+            }
         }
     }
 
