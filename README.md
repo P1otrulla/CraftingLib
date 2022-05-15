@@ -4,14 +4,15 @@ Simple library for creating custom craftings.
 ### Eternal Repository
 ```xml
 <repository>
-  <id>eternalcode-repository</id>
-  <name>EternalCode.pl</name>
-  <url>https://repo.eternalcode.pl/releases</url>
+    <id>eternalcode-repository</id>
+    <name>EternalCode.pl</name>
+    <url>https://repo.eternalcode.pl/#/releases</url>
 </repository>
+
 ```
 ```groovy
 maven {
-    url "https://repo.eternalcode.pl/releases"
+    url "https://repo.eternalcode.pl/#/releases"
  }
 ```
 
@@ -20,11 +21,11 @@ maven {
 <dependency>
   <groupId>net.osnixer</groupId>
   <artifactId>craftinglib</artifactId>
-  <version>1.2</version>
+  <version>1.0.2</version>
 </dependency>
 ```
 ```groovy
-implementation 'net.osnixer:craftinglib:1.2'
+implementation 'net.osnixer:craftinglib:1.0.2'
 ```
 
 ### How to use?
@@ -73,4 +74,3 @@ CraftingManager craftingManager = craftingLib.getCraftingManager();
 
 ## See (Important dependencies used)
 - [panda-lang/expressible](https://github.com/panda-lang/expressible)
-- [projectlombok/lombok](https://github.com/projectlombok/lombok)

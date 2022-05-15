@@ -1,6 +1,5 @@
 package net.osnixer.craftinglib;
 
-import lombok.experimental.UtilityClass;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
@@ -9,8 +8,7 @@ import org.bukkit.inventory.Recipe;
 
 import java.util.Iterator;
 
-@UtilityClass
-public class CraftingUtils {
+public final class CraftingUtils {
 
     public static void removeRecipe(ItemStack itemStack){
         Iterator<Recipe> recipes = Bukkit.recipeIterator();
@@ -39,5 +37,9 @@ public class CraftingUtils {
         }
         item.setAmount(item.getAmount() - amount);
         inventory.setItem(slot, item);
+    }
+
+    private CraftingUtils() {
+
     }
 }

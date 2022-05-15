@@ -1,6 +1,5 @@
 package net.osnixer.craftinglib;
 
-import lombok.Getter;
 import net.osnixer.craftinglib.recipe.RecipeNMS;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
@@ -8,9 +7,9 @@ import org.bukkit.inventory.ShapedRecipe;
 
 public class Crafting {
 
-    @Getter private final ItemStack[]   itemArray;
-    @Getter private final ItemStack     result;
-    @Getter private boolean             custom;
+    private final ItemStack[]   itemArray;
+    private final ItemStack     result;
+    private boolean             custom;
 
     public Crafting(ItemStack[] itemArray, ItemStack result) {
         this.itemArray = itemArray;
@@ -40,4 +39,17 @@ public class Crafting {
 
         Bukkit.addRecipe(recipe);
     }
+
+    public ItemStack[] getItemArray() {
+        return this.itemArray;
+    }
+
+    public ItemStack getResult() {
+        return this.result;
+    }
+
+    public boolean isCustom() {
+        return this.custom;
+    }
+
 }

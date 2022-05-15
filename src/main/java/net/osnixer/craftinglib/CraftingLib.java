@@ -9,10 +9,10 @@ import org.bukkit.plugin.Plugin;
 
 public class CraftingLib {
 
-    @Getter private final CraftingManager craftingManager;
-    @Getter private static CraftingLib instance;
-    @Getter private final RecipeNMS recipeNMS;
-    @Getter private final Plugin plugin;
+    private final CraftingManager craftingManager;
+    private static CraftingLib instance;
+    private final RecipeNMS recipeNMS;
+    private final Plugin plugin;
 
     public CraftingLib(Plugin plugin){
         CraftingLib.instance = this;
@@ -34,5 +34,21 @@ public class CraftingLib {
             case "v1_12_R1": return new NewRecipe();
             default: return new NewerRecipe();
         }
+    }
+
+    public CraftingManager getCraftingManager() {
+        return this.craftingManager;
+    }
+
+    public static CraftingLib getInstance() {
+        return instance;
+    }
+
+    public RecipeNMS getRecipeNMS() {
+        return this.recipeNMS;
+    }
+
+    public Plugin getPlugin() {
+        return this.plugin;
     }
 }

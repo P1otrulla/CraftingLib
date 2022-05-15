@@ -10,39 +10,39 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class CraftingManager {
 
-    private final Map<String, Crafting> craftingMap = new ConcurrentHashMap<>();
+    private final Map<String, Crafting> craftings = new ConcurrentHashMap<>();
 
     public void createCrafting(String craftingName, Crafting crafting){
-        if (this.craftingMap.containsKey(craftingName)){
+        if (this.craftings.containsKey(craftingName)){
             throw new CraftingException("Crafting with this name exists!");
         }
-        this.craftingMap.put(craftingName, crafting);
+        this.craftings.put(craftingName, crafting);
     }
 
     public void removeCrafting(String craftingName){
-        if (!this.craftingMap.containsKey(craftingName)){
+        if (!this.craftings.containsKey(craftingName)){
             throw new CraftingException("Crafting with this name not exists");
         }
-        Crafting crafting = this.craftingMap.get(craftingName);
+        Crafting crafting = this.craftings.get(craftingName);
 
-        this.craftingMap.remove(craftingName);
+        this.craftings.remove(craftingName);
         CraftingUtils.removeRecipe(crafting.getResult());
     }
 
     public Option<Crafting> findCrafting(ItemStack itemStack){
-        return PandaStream.of(this.craftingMap.values())
+        return PandaStream.of(this.craftings.values())
                 .filter(craft -> craft.getResult().isSimilar(itemStack))
                 .head();
     }
 
     public Option<Crafting> findCrafting(String craftingName){
-        if (this.craftingMap.get(craftingName) == null){
+        if (this.craftings.get(craftingName) == null){
             return Option.none();
         }
-        return Option.of(this.craftingMap.get(craftingName));
+        return Option.of(this.craftings.get(craftingName));
     }
 
-    public Map<String, Crafting> get() {
-        return Collections.unmodifiableMap(this.craftingMap);
+    public Map<String, Crafting> getCraftings() {
+        return Collections.unmodifiableMap(this.craftings);
     }
 }

@@ -47,10 +47,6 @@ publishing {
 }
 
 dependencies {
-    // lombok
-    compileOnly "org.projectlombok:lombok:1.18.22"
-    annotationProcessor "org.projectlombok:lombok:1.18.22"
-
     // paper api
     compileOnly "org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT"
 
