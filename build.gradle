@@ -49,9 +49,6 @@ publishing {
 dependencies {
     // paper api
     compileOnly "org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT"
-
-    // expresslibe
-    implementation "org.panda-lang:expressible:1.1.16"
 }
 
 tasks.withType(JavaCompile) {
@@ -64,6 +61,4 @@ shadowJar {
     exclude "org/intellij/lang/annotations/**"
     exclude "org/jetbrains/annotations/**"
     exclude "javax/**"
-
-    relocate "panda", "net.osnixer.craftinglib.libs.panda"
 }
