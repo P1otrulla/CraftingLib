@@ -6,13 +6,13 @@ Simple library for creating custom craftings.
 <repository>
     <id>eternalcode-repository</id>
     <name>EternalCode.pl</name>
-    <url>https://repo.eternalcode.pl/#/releases</url>
+    <url>https://repo.eternalcode.pl/releases</url>
 </repository>
 
 ```
 ```groovy
 maven {
-    url "https://repo.eternalcode.pl/#/releases"
+    url "https://repo.eternalcode.pl/releases"
  }
 ```
 
