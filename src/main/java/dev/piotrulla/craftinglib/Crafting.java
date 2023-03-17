@@ -110,10 +110,6 @@ public class Crafting {
          * @return Builder of crafting
          */
         public Builder withItems(ItemStack[] itemStacks) {
-            if (itemStacks.length != 4 && itemStacks.length < 5 && itemStacks.length > 9) {
-                throw new CraftingException("Item array cannot be longer than 9");
-            }
-
             for (int i = 0; i <= 8; i++) {
                 this.itemArray[i] = itemStacks[i];
             }
