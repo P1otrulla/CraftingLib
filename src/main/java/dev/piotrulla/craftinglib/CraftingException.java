@@ -1,4 +1,4 @@
-package net.osnixer.craftinglib;
+package dev.piotrulla.craftinglib;
 
 public class CraftingException extends RuntimeException {
 
@@ -6,3 +6,4 @@ public class CraftingException extends RuntimeException {
         super(message);
     }
 }
+

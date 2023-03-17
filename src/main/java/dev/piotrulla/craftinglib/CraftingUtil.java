@@ -1,4 +1,4 @@
-package net.osnixer.craftinglib;
+package dev.piotrulla.craftinglib;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -8,8 +8,9 @@ import org.bukkit.inventory.Recipe;
 
 import java.util.Iterator;
 
-public final class CraftingUtils {
+public final class CraftingUtil {
 
+    @Deprecated(forRemoval = true)
     public static void removeRecipe(ItemStack itemStack){
         Iterator<Recipe> recipes = Bukkit.recipeIterator();
 
@@ -35,6 +36,7 @@ public final class CraftingUtils {
 
         if (item.getAmount() <= amount) {
             inventory.setItem(slot, new ItemStack(Material.AIR));
+
             return;
         }
 
@@ -42,7 +44,7 @@ public final class CraftingUtils {
         inventory.setItem(slot, item);
     }
 
-    private CraftingUtils() {
+    private CraftingUtil() {
 
     }
 }

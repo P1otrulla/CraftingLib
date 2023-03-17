@@ -1,40 +1,50 @@
-package net.osnixer.craftinglib;
+package dev.piotrulla.craftinglib;
 
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class CraftingManager {
 
-    private final Map<String, Crafting> craftings = new ConcurrentHashMap<>();
+    private final Map<String, Crafting> craftings = new HashMap<>();
+
+    private final CraftingRegistry craftingRegistry;
+
+    public CraftingManager(CraftingRegistry craftingRegistry) {
+        this.craftingRegistry = craftingRegistry;
+    }
 
     public void createCrafting(String craftingName, Crafting crafting) {
         if (this.craftings.containsKey(craftingName)){
-            throw new CraftingException("Crafting with this name exists!");
+            throw new CraftingException("Crafting with name "+ craftingName +" exists!");
         }
 
         this.craftings.put(craftingName, crafting);
+
+        this.craftingRegistry.addCrafting(crafting);
     }
 
     public void removeCrafting(String craftingName) {
         if (!this.craftings.containsKey(craftingName)) {
-            throw new CraftingException("Crafting with this name not exists");
+            throw new CraftingException("Crafting with name " + craftingName + " not exists");
         }
 
         Crafting crafting = this.craftings.get(craftingName);
 
         this.craftings.remove(craftingName);
-        CraftingUtils.removeRecipe(crafting.getResult());
+
+        this.craftingRegistry.removeCrafting(crafting);
     }
 
     public Optional<Crafting> findCrafting(ItemStack itemStack) {
         return this.craftings
                 .values()
                 .stream()
-                .filter(crafting -> crafting.getResult().isSimilar(itemStack))
+                .filter(crafting -> crafting.result().isSimilar(itemStack))
                 .findFirst();
     }
 
@@ -46,7 +56,7 @@ public class CraftingManager {
         return Optional.of(this.craftings.get(craftingName));
     }
 
-    public Map<String, Crafting> getCraftings() {
-        return Collections.unmodifiableMap(this.craftings);
+    public Collection<Crafting> craftings() {
+        return Collections.unmodifiableCollection(this.craftings.values());
     }
 }

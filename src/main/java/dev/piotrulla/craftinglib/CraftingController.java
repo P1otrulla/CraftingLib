@@ -1,4 +1,4 @@
-package net.osnixer.craftinglib;
+package dev.piotrulla.craftinglib;
 
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -12,16 +12,16 @@ import org.bukkit.inventory.Recipe;
 
 import java.util.Optional;
 
-public class CraftingListeners implements Listener {
+public class CraftingController implements Listener {
 
     private final CraftingManager manager;
 
-    public CraftingListeners(CraftingManager craftingManager){
+    public CraftingController(CraftingManager craftingManager) {
         this.manager = craftingManager;
     }
 
     @EventHandler
-    public void onCraft(CraftItemEvent event){
+    public void onCraft(CraftItemEvent event) {
         ItemStack result = event.getRecipe().getResult();
         Optional<Crafting> craftingOptional = this.manager.findCrafting(result);
         CraftingInventory inventory = event.getInventory();
@@ -30,7 +30,7 @@ public class CraftingListeners implements Listener {
             for (int i = 1; i <= 9; i++) {
                 if (inventory.getItem(i) != null) {
                     ItemStack inventoryItem = inventory.getItem(i);
-                    ItemStack itemStack = crafting.getItemArray()[i - 1];
+                    ItemStack itemStack = crafting.items()[i - 1];
 
                     if (inventoryItem.getType() != itemStack.getType()) {
                         event.setCancelled(true);
@@ -51,16 +51,16 @@ public class CraftingListeners implements Listener {
             if (!event.isCancelled()) {
                 if (event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY) {
                     event.setCancelled(true);
-                    inventory.setResult(crafting.getResult());
+                    inventory.setResult(crafting.result());
 
                     return;
                 }
 
                 for (int i = 1; i <= 9; i++) {
-                    int amount = crafting.getItemArray()[i - 1].getAmount() - 1;
+                    int amount = crafting.items()[i - 1].getAmount() - 1;
 
-                    CraftingUtils.removeItem(inventory, i, amount);
-                    inventory.setResult(crafting.getResult());
+                    CraftingUtil.removeItem(inventory, i, amount);
+                    inventory.setResult(crafting.result());
                 }
             }
         });
@@ -87,7 +87,7 @@ public class CraftingListeners implements Listener {
             for (int i = 1; i <= 9; i++) {
                 if (inventory.getItem(i) != null) {
                     ItemStack inventoryItem = inventory.getItem(i);
-                    ItemStack itemStack = crafting.getItemArray()[i - 1];
+                    ItemStack itemStack = crafting.items()[i - 1];
 
                     if (inventoryItem.getType() != itemStack.getType()) {
                         inventory.setResult(new ItemStack(Material.AIR));
