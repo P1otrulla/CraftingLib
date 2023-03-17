@@ -40,7 +40,7 @@ public class CraftingController implements Listener {
                         event.setCancelled(true);
                     }
 
-                    if (!inventoryItem.getItemMeta().equals(itemStack.getItemMeta())){
+                    if (!inventoryItem.getItemMeta().equals(itemStack.getItemMeta())) {
                         event.setCancelled(true);
                     }
                 }

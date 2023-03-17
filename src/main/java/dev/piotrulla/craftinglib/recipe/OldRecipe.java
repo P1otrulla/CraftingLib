@@ -2,7 +2,6 @@ package dev.piotrulla.craftinglib.recipe;
 
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
-import org.bukkit.inventory.ShapelessRecipe;
 
 public class OldRecipe implements RecipeAccessor {
 

@@ -3,7 +3,6 @@ package dev.piotrulla.craftinglib.recipe;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
-import org.bukkit.inventory.ShapelessRecipe;
 
 import java.util.UUID;
 

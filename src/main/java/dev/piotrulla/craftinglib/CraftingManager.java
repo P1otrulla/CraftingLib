@@ -19,7 +19,7 @@ public class CraftingManager {
     }
 
     public void createCrafting(String craftingName, Crafting crafting) {
-        if (this.craftings.containsKey(craftingName)){
+        if (this.craftings.containsKey(craftingName)) {
             throw new CraftingException("Crafting with name "+ craftingName +" exists!");
         }
 

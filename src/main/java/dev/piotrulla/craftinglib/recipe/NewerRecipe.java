@@ -11,7 +11,6 @@ public class NewerRecipe implements RecipeAccessor {
 
     @Override
     public ShapedRecipe createShapedRecipe(ItemStack itemStack, String group) {
-
         NamespacedKey key = NamespacedKey.minecraft(UUID.randomUUID().toString());
 
         ShapedRecipe shapedRecipe = new ShapedRecipe(key, itemStack);

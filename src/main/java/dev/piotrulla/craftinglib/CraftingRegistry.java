@@ -26,7 +26,7 @@ public final class CraftingRegistry {
 
         recipe.shape("ABC", "DEF", "GHI");
 
-        for (int i = 0; i <= 8; i++){
+        for (int i = 0; i <= 8; i++) {
             ItemStack itemStack = crafting.items()[i];
 
             if (itemStack == null) {
