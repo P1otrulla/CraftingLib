@@ -1,10 +1,13 @@
 plugins {
-    id("java")
-    id("com.github.johnrengelman.shadow") version "7.1.2"
+    `java-library`
+    `maven-publish`
+
+    id("com.github.johnrengelman.shadow") version "8.1.0"
 }
 
 group = "dev.piotrulla"
 version = "2.0.0"
+val artifactId = "craftinglib"
 
 repositories {
     gradlePluginPortal()
@@ -25,6 +28,28 @@ java {
 tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
 }
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = "$group"
+            artifactId = artifactId
+            version = "${project.version}"
+
+            from(components["java"])
+        }
+    }
+    repositories {
+        maven {
+            name = "EternalCodeRepo"
+            url = uri("https://repo.eternalcode.pl/releases")
+
+            // add repoNameUsername and repoNamePassword to gradle.properties file in .gradle
+            credentials(PasswordCredentials::class)
+        }
+    }
+}
+
 
 tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
     archiveFileName.set("CraftingLib v${project.version}.jar")
