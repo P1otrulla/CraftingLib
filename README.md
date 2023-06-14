@@ -6,7 +6,7 @@ Maven:
 <repository>
   <id>eternalcode-reposilite</id>
   <name>EternalCode Repository</name>
-  <url>https://repo.eternalcode.pl/{repository}</url>
+  <url>https://repo.eternalcode.pl/</url>
 </repository>
 ```
 ```
@@ -20,7 +20,7 @@ Maven:
 Gradle:
 ```
 maven {
-    url = uri("https://repo.eternalcode.pl/{repository}")
+    url = uri("https://repo.eternalcode.pl/")
 }
 ```
 ```
