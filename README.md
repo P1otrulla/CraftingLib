@@ -1,28 +1,16 @@
 # CraftingLib
 Simple library for creating custom craftings.
 
-Maven:
-```
-<repository>
-  <id>eternalcode-reposilite</id>
-  <name>EternalCode Repository</name>
-  <url>https://repo.eternalcode.pl/</url>
-</repository>
-```
-```
-<dependency>
-  <groupId>dev.piotrulla</groupId>
-  <artifactId>CraftingLib</artifactId>
-  <version>2.0.0</version>
-</dependency>
-```
+## 🎈 Introduction & support
+ 🎞 Wiki: [click](https://github.com/P1otrulla/CraftingLib/wiki/Introduction) 
+ 
+ 🕶 Example code: [click](https://github.com/P1otrulla/CraftingLib/tree/master/example)
+ 
+ 📣 Discord support [click](https://discord.gg/TBgbN3fruj)
 
-Gradle:
-```
-maven {
-    url = uri("https://repo.eternalcode.pl/")
-}
-```
-```
-implementation("dev.piotrulla:CraftingLib:2.0.0")
-```
+## 🛠 Contributing and issue
+
+If you found problem with this lib feel free to [contribute](https://github.com/P1otrulla/CraftingLib/pulls) or open [issue](https://github.com/P1otrulla/CraftingLib/issues).
+
+
+
