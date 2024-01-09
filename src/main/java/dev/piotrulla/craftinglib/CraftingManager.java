@@ -6,11 +6,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 public class CraftingManager {
 
-    private final Map<String, Crafting> craftings = new HashMap<>();
+    private final Map<String, Crafting> craftingsById = new HashMap<>();
+    private final Map<ItemStack, Crafting> craftingsByResult = new HashMap<>();
 
     private final CraftingRegistry craftingRegistry;
 
@@ -19,44 +19,46 @@ public class CraftingManager {
     }
 
     public void createCrafting(String craftingName, Crafting crafting) {
-        if (this.craftings.containsKey(craftingName)) {
+        if (this.craftingsById.containsKey(craftingName)) {
             throw new CraftingException("Crafting with name "+ craftingName +" exists!");
         }
 
-        this.craftings.put(craftingName, crafting);
+        this.craftingsById.put(craftingName, crafting);
+        this.craftingsByResult.put(crafting.result(), crafting);
 
         this.craftingRegistry.addCrafting(crafting);
     }
 
     public void removeCrafting(String craftingName) {
-        if (!this.craftings.containsKey(craftingName)) {
+        if (!this.craftingsById.containsKey(craftingName)) {
             throw new CraftingException("Crafting with name " + craftingName + " not exists");
         }
 
-        Crafting crafting = this.craftings.get(craftingName);
+        Crafting crafting = this.craftingsById.get(craftingName);
 
-        this.craftings.remove(craftingName);
+        this.craftingsById.remove(craftingName);
+        this.craftingsByResult.remove(crafting.result());
 
         this.craftingRegistry.removeCrafting(crafting);
     }
 
-    public Optional<Crafting> findCrafting(ItemStack itemStack) {
-        return this.craftings
-                .values()
-                .stream()
-                .filter(crafting -> crafting.result().isSimilar(itemStack))
-                .findFirst();
-    }
-
-    public Optional<Crafting> findCrafting(String craftingName) {
-        if (this.craftings.get(craftingName) == null){
-            return Optional.empty();
+    public Crafting findCrafting(ItemStack itemStack) {
+        if (!this.craftingsByResult.containsKey(itemStack)) {
+            throw new CraftingException("Crafting with result " + itemStack + " not exists");
         }
 
-        return Optional.of(this.craftings.get(craftingName));
+        return this.craftingsByResult.get(itemStack);
+    }
+
+    public Crafting findCrafting(String craftingName) {
+        if (!this.craftingsById.containsKey(craftingName)) {
+            throw new CraftingException("Crafting with name " + craftingName + " not exists");
+        }
+
+        return this.craftingsById.get(craftingName);
     }
 
     public Collection<Crafting> craftings() {
-        return Collections.unmodifiableCollection(this.craftings.values());
+        return Collections.unmodifiableCollection(this.craftingsById.values());
     }
 }

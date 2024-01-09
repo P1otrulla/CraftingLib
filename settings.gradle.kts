@@ -1,2 +1,2 @@
-rootProject.name = "CraftingLib"
-
+rootProject.name = "craftinglib"
+include("example")

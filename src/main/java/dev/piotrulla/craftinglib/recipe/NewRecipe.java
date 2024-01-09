@@ -3,20 +3,21 @@ package dev.piotrulla.craftinglib.recipe;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
-
-import java.util.UUID;
+import org.bukkit.plugin.Plugin;
 
 public class NewRecipe implements RecipeAccessor {
 
+    private final Plugin plugin;
+
+    public NewRecipe(Plugin plugin) {
+        this.plugin = plugin;
+    }
+
     @Override
-    public ShapedRecipe createShapedRecipe(ItemStack itemStack, String group) {
-        NamespacedKey key = NamespacedKey.minecraft(UUID.randomUUID().toString());
+    public ShapedRecipe createShapedRecipe(ItemStack itemStack, String craftingName) {
+        NamespacedKey key = new NamespacedKey(this.plugin, "craftinglib-" + craftingName.toLowerCase());
 
-        ShapedRecipe shapedRecipe = new ShapedRecipe(key, itemStack);
-
-        shapedRecipe.setGroup(group);
-
-        return shapedRecipe;
+        return new ShapedRecipe(key, itemStack);
     }
 
     @Override

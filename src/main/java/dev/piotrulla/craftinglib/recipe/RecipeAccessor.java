@@ -5,7 +5,7 @@ import org.bukkit.inventory.ShapedRecipe;
 
 public interface RecipeAccessor {
 
-    ShapedRecipe createShapedRecipe(ItemStack itemStack, String group);
+    ShapedRecipe createShapedRecipe(ItemStack itemStack, String craftingName);
 
     void setIngredient(ShapedRecipe shapedRecipe, char key, ItemStack itemStack);
 }

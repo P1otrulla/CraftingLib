@@ -10,21 +10,21 @@ import java.util.List;
  */
 public class Crafting {
 
-    private final ItemStack[] itemArray;
+    private final ItemStack[] ingredients;
     private final ItemStack result;
-    private final String group;
+    private final String name;
 
-    private Crafting(ItemStack[] itemArray, ItemStack result, String group) {
-        this.itemArray = itemArray;
+    private Crafting(ItemStack[] ingredients, ItemStack result, String name) {
+        this.ingredients = ingredients;
         this.result = result;
-        this.group = group;
+        this.name = name;
     }
 
     /**
      * @return Array of items in crafting table
      */
-    public ItemStack[] items() {
-        return this.itemArray;
+    public ItemStack[] ingredients() {
+        return this.ingredients;
     }
 
     /**
@@ -35,10 +35,10 @@ public class Crafting {
     }
 
     /**
-     * @return Group of crafting
+     * @return Name of crafting
      */
-    public String group() {
-        return this.group;
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -50,10 +50,11 @@ public class Crafting {
 
     /**
      * @return True if crafting is custom
+     * custom means that item has custom name, lore or amount > 1
      */
     public boolean isCustom() {
-        for (ItemStack itemStack : this.itemArray) {
-            if (itemStack != null && itemStack.hasItemMeta()){
+        for (ItemStack itemStack : this.ingredients) {
+            if (itemStack != null && itemStack.hasItemMeta()) {
                 return true;
             }
 
@@ -69,7 +70,7 @@ public class Crafting {
 
         private final ItemStack[] itemArray = new ItemStack[9];
         private ItemStack result;
-        private String group;
+        private String name;
 
         /**
          * @param index Index of item in crafting table
@@ -185,26 +186,24 @@ public class Crafting {
         }
 
         /**
-         * @param group Group of crafting
-         *
+         * @param name Name of crafting
          * @return Builder of crafting
          */
-        public Builder withGroup(String group) {
-            this.group = group;
+        public Builder withName(String name) {
+            this.name = name;
 
             return this;
         }
 
         public Crafting build() {
+            if (this.name == null) {
+                throw new CraftingException("Name cannot be null");
+            }
             if (this.result == null) {
                 throw new CraftingException("Result item cannot be null");
             }
 
-            if (this.group == null) {
-                this.group = "";
-            }
-
-            return new Crafting(this.itemArray, this.result, this.group);
+            return new Crafting(this.itemArray, this.result, this.name);
         }
 
     }

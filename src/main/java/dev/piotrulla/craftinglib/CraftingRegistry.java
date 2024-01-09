@@ -22,12 +22,12 @@ public final class CraftingRegistry {
     }
 
     public void addCrafting(Crafting crafting) {
-        ShapedRecipe recipe = this.accessor.createShapedRecipe(crafting.result(), crafting.group());
+        ShapedRecipe recipe = this.accessor.createShapedRecipe(crafting.result(), crafting.name());
 
         recipe.shape("ABC", "DEF", "GHI");
 
         for (int i = 0; i <= 8; i++) {
-            ItemStack itemStack = crafting.items()[i];
+            ItemStack itemStack = crafting.ingredients()[i];
 
             if (itemStack == null) {
                 itemStack = new ItemStack(Material.AIR);

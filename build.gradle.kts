@@ -1,16 +1,18 @@
 plugins {
-    id("java")
     id("com.github.johnrengelman.shadow") version "7.1.2"
+    `java-library`
+    `maven-publish`
 }
 
 group = "dev.piotrulla"
-version = "2.0.0"
+version = "3.0.0"
 
 repositories {
     gradlePluginPortal()
     mavenCentral()
+    mavenLocal()
 
-    maven { url = uri("https://papermc.io/repo/repository/maven-public/")}
+    maven { url = uri("https://hub.spigotmc.org/nexus/content/repositories/snapshots/") }
 }
 
 dependencies {
@@ -18,8 +20,8 @@ dependencies {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 tasks.withType<JavaCompile> {
@@ -39,4 +41,16 @@ tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
 
     mergeServiceFiles()
     minimize()
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            from(components["java"])
+        }
+    }
+
+    repositories {
+        mavenLocal()
+    }
 }

@@ -1,11 +1,15 @@
 package dev.piotrulla.craftinglib.recipe;
 
 import org.bukkit.Server;
+import org.bukkit.plugin.Plugin;
 
 public final class RecipeDetector {
 
-    public static RecipeAccessor detectRecipe(Server server) {
-        String version = server.getClass().getName().split("\\.")[3];
+    private RecipeDetector() {
+    }
+
+    public static RecipeAccessor detectRecipe(Plugin plugin) {
+        String version = plugin.getServer().getClass().getName().split("\\.")[3];
 
         switch (version) {
             case "v1_8_R1":
@@ -19,15 +23,12 @@ public final class RecipeDetector {
             }
 
             case "v1_12_R1": {
-                return new NewRecipe();
+                return new NewRecipe(plugin);
             }
 
             default: {
-                return new NewerRecipe();
+                return new NewerRecipe(plugin);
             }
         }
-    }
-
-    private RecipeDetector() {
     }
 }

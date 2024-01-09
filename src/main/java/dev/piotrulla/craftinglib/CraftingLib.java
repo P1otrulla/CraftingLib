@@ -17,7 +17,7 @@ public class CraftingLib {
 
         Server server = plugin.getServer();
 
-        this.recipeAccessor = RecipeDetector.detectRecipe(server);
+        this.recipeAccessor = RecipeDetector.detectRecipe(plugin);
 
         this.craftingRegistry = new CraftingRegistry(this.recipeAccessor, server);
         this.craftingManager = new CraftingManager(this.craftingRegistry);

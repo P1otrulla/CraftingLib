@@ -6,12 +6,8 @@ import org.bukkit.inventory.ShapedRecipe;
 public class OldRecipe implements RecipeAccessor {
 
     @Override
-    public ShapedRecipe createShapedRecipe(ItemStack itemStack, String group) {
-        ShapedRecipe shapedRecipe = new ShapedRecipe(itemStack);
-
-        shapedRecipe.setGroup(group);
-
-        return shapedRecipe;
+    public ShapedRecipe createShapedRecipe(ItemStack itemStack, String ingored) {
+        return new ShapedRecipe(itemStack);
     }
 
     @Override

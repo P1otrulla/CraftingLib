@@ -10,8 +10,11 @@ import java.util.Iterator;
 
 public final class CraftingUtil {
 
-    @Deprecated(forRemoval = true)
-    public static void removeRecipe(ItemStack itemStack){
+    /**
+     * Removes all recipes for given item without reloading server
+     * @param itemStack Item to remove recipes
+     **/
+    public static void removeRecipe(ItemStack itemStack) {
         Iterator<Recipe> recipes = Bukkit.recipeIterator();
 
         while (recipes.hasNext()) {
