@@ -10,7 +10,7 @@ Simple library for creating custom craftings.
 
 ## 🛠 Contributing and issue
 
-If you found problem with this lib feel free to [contribute](https://github.com/P1otrulla/CraftingLib/pulls) or open [issue](https://github.com/P1otrulla/CraftingLib/issues).
+If you found a problem with this lib feel free to [contribute](https://github.com/P1otrulla/CraftingLib/pulls) or open [issue](https://github.com/P1otrulla/CraftingLib/issues).
 
 
 
