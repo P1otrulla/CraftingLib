@@ -1,3 +1,6 @@
+
+![CraftingLib](https://github.com/P1otrulla/CraftingLib/assets/65517973/6cab505c-391c-4a73-b417-0081eebc9e79)
+
 # CraftingLib
 Simple library for creating custom craftings.
 
