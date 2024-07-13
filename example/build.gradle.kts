@@ -9,9 +9,8 @@ version = "3.0.0"
 
 repositories {
     mavenCentral()
-    mavenLocal()
-
-    maven { url = uri("https://hub.spigotmc.org/nexus/content/repositories/snapshots/") }
+    maven("https://repo.eternalcode.pl/releases")
+    maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
 }
 
 dependencies {
