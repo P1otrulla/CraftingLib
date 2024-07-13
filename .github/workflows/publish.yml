@@ -1,8 +1,10 @@
-name: Publish CraftingLib
+name: craftinglib-publish
+
 on:
-  release:
+  workflow_run:
+    workflows: [ craftinglib-build ]
+    types: [ completed ]
     branches: [ master ]
-    types: [ published ]
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -12,10 +14,11 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up JDK
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
-          java-version: 17
+          java-version: 21
+          cache: gradle
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew

@@ -18,7 +18,21 @@ public class CraftingManager {
         this.craftingRegistry = craftingRegistry;
     }
 
+    /**
+     * @deprecated Use {@link #createCrafting(Crafting)} instead
+     */
+    @Deprecated
     public void createCrafting(String craftingName, Crafting crafting) {
+        if (!crafting.name().equals(craftingName)) {
+            throw new CraftingException("Crafting name must be the same as crafting name in crafting object");
+        }
+
+        this.createCrafting(crafting);
+    }
+
+    public void createCrafting(Crafting crafting) {
+        String craftingName = crafting.name();
+
         if (this.craftingsById.containsKey(craftingName)) {
             throw new CraftingException("Crafting with name "+ craftingName +" exists!");
         }
