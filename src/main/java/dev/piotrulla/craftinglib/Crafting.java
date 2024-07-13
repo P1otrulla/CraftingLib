@@ -49,8 +49,7 @@ public class Crafting {
     }
 
     /**
-     * @return True if crafting is custom
-     * custom means that item has custom name, lore or amount > 1
+     * @return True, if crafting is custom, means that item has custom name, lore or amount is greater than 1
      */
     public boolean isCustom() {
         for (ItemStack itemStack : this.ingredients) {
