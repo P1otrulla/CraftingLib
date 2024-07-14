@@ -27,7 +27,7 @@ tasks.withType<JavaCompile> {
 
 bukkit {
     name = "CraftingLibExample"
-    version = "3.0.1"
+    version = "3.1.0"
     main = "dev.piotrulla.example.CraftingLibExample"
     apiVersion = "1.13"
 }
