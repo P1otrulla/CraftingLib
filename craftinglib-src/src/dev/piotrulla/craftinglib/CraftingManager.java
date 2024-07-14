@@ -6,6 +6,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.UnmodifiableView;
 
 public class CraftingManager {
 
@@ -22,6 +27,7 @@ public class CraftingManager {
      * @deprecated Use {@link #createCrafting(Crafting)} instead
      */
     @Deprecated
+    @ApiStatus.ScheduledForRemoval(inVersion = "3.2.0")
     public void createCrafting(String craftingName, Crafting crafting) {
         if (!crafting.name().equals(craftingName)) {
             throw new CraftingException("Crafting name must be the same as crafting name in crafting object");
@@ -34,7 +40,7 @@ public class CraftingManager {
         String craftingName = crafting.name();
 
         if (this.craftingsById.containsKey(craftingName)) {
-            throw new CraftingException("Crafting with name "+ craftingName +" exists!");
+            this.removeCrafting(craftingName);
         }
 
         this.craftingsById.put(craftingName, crafting);
@@ -43,36 +49,45 @@ public class CraftingManager {
         this.craftingRegistry.addCrafting(crafting);
     }
 
-    public void removeCrafting(String craftingName) {
-        if (!this.craftingsById.containsKey(craftingName)) {
-            throw new CraftingException("Crafting with name " + craftingName + " not exists");
-        }
-
+    @Nullable
+    public Crafting removeCrafting(String craftingName) {
         Crafting crafting = this.craftingsById.get(craftingName);
+
+        if (crafting == null) {
+            return null;
+        }
 
         this.craftingsById.remove(craftingName);
         this.craftingsByResult.remove(crafting.result());
 
         this.craftingRegistry.removeCrafting(crafting);
+        return crafting;
     }
 
+    @Nullable
     public Crafting findCrafting(ItemStack itemStack) {
-        if (!this.craftingsByResult.containsKey(itemStack)) {
-            throw new CraftingException("Crafting with result " + itemStack + " not exists");
-        }
-
         return this.craftingsByResult.get(itemStack);
     }
 
+    @Nullable
     public Crafting findCrafting(String craftingName) {
-        if (!this.craftingsById.containsKey(craftingName)) {
-            throw new CraftingException("Crafting with name " + craftingName + " not exists");
-        }
-
         return this.craftingsById.get(craftingName);
     }
 
+    @Contract(pure = true)
+    public boolean hasCrafting(String craftingName) {
+        return this.craftingsById.containsKey(craftingName);
+    }
+
+    @Contract(pure = true)
+    public boolean hasCrafting(ItemStack itemStack) {
+        return this.craftingsByResult.containsKey(itemStack);
+    }
+
+    @NotNull
+    @UnmodifiableView
     public Collection<Crafting> craftings() {
         return Collections.unmodifiableCollection(this.craftingsById.values());
     }
+
 }

@@ -4,24 +4,13 @@ plugins {
 }
 
 group = "dev.piotrulla"
-version = "3.0.1"
+version = "3.1.0"
 
-repositories {
-    mavenCentral()
-    maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
-}
-dependencies {
-    compileOnly("org.spigotmc:spigot-api:1.19-R0.1-SNAPSHOT")
-}
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
     withSourcesJar()
     withJavadocJar()
 }
-tasks.withType<JavaCompile> {
-    options.encoding = "UTF-8"
-}
+
 publishing {
     publications {
         create<MavenPublication>("maven") {
@@ -39,6 +28,7 @@ publishing {
         )
     }
 }
+
 fun RepositoryHandler.maven(name: String, url: String, username: String, password: String) {
     val isSnapshot = version.toString().endsWith("-SNAPSHOT")
     this.maven {
