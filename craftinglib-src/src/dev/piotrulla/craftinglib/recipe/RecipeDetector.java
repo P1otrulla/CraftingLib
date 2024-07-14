@@ -1,6 +1,5 @@
 package dev.piotrulla.craftinglib.recipe;
 
-import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
 
 public final class RecipeDetector {
