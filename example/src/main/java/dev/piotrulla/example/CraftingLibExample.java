@@ -59,9 +59,9 @@ public class CraftingLibExample extends JavaPlugin {
         ItemStack pickaxe = new ItemStack(Material.DIAMOND_PICKAXE);
 
         ItemMeta itemMeta = pickaxe.getItemMeta();
-        itemMeta.addEnchant(Enchantment.EFFICIENCY, 6, true);
-        itemMeta.addEnchant(Enchantment.UNBREAKING, 4, true);
-        itemMeta.addEnchant(Enchantment.LOOTING, 4, true);
+        itemMeta.addEnchant(Enchantment.DIG_SPEED, 6, true);
+        itemMeta.addEnchant(Enchantment.DURABILITY, 4, true);
+        itemMeta.addEnchant(Enchantment.LOOT_BONUS_BLOCKS, 4, true);
 
         itemMeta.setDisplayName(this.color("&6&lSuper Pickaxe"));
         itemMeta.setLore(Collections.singletonList(this.color("&cThis pickaxe is super fast!")));
