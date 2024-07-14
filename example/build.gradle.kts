@@ -8,6 +8,7 @@ repositories {
     mavenCentral()
     maven("https://repo.eternalcode.pl/releases")
     maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
+    maven("https://oss.sonatype.org/content/repositories/snapshots/")
 }
 
 dependencies {
