@@ -111,7 +111,7 @@ public class BukkitCraftingController implements Listener {
     private void handleCustomCraft(@NotNull CraftItemEvent event,
                                    @NotNull Player player,
                                    @NotNull BukkitCraftingRecipe recipe) {
-        // Let the event proceed with the custom result
+        // Let the action proceed with the custom result
         this.logDebug("Player " + player.getName() + " crafted: " + recipe.id());
 
         // Execute callback if configured

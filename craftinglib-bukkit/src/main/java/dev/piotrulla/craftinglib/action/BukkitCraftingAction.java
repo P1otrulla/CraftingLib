@@ -1,4 +1,4 @@
-package dev.piotrulla.craftinglib.event;
+package dev.piotrulla.craftinglib.action;
 
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -9,23 +9,23 @@ import java.util.Objects;
 /**
  * Base class for Bukkit crafting events.
  */
-public abstract class BukkitCraftingEvent implements CraftingEvent {
+public abstract class BukkitCraftingAction implements CraftingAction {
 
     protected final Player player;
     protected final Instant timestamp;
 
-    protected BukkitCraftingEvent(@NotNull Player player) {
+    protected BukkitCraftingAction(@NotNull Player player) {
         this.player = Objects.requireNonNull(player, "Player cannot be null");
         this.timestamp = Instant.now();
     }
 
     @NotNull
-    public Player getPlayer() {
+    public Player player() {
         return this.player;
     }
 
     @Override
-    public Instant getTimestamp() {
+    public Instant timestamp() {
         return this.timestamp;
     }
 }

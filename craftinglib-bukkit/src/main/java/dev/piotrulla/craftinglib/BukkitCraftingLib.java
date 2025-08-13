@@ -29,7 +29,7 @@ public class BukkitCraftingLib implements CraftingLib<ItemStack> {
             return;
         }
 
-        // Register event listeners
+        // Register action listeners
         this.plugin.getServer().getPluginManager()
                 .registerEvents(new CraftingEventListener(this.manager), this.plugin);
 

@@ -1,15 +1,15 @@
 package dev.piotrulla.craftinglib.controller;
 
 import dev.piotrulla.craftinglib.CraftingRecipe;
-import dev.piotrulla.craftinglib.event.CraftingEvent;
-import dev.piotrulla.craftinglib.event.dispatcher.CraftingEventDispatcher;
+import dev.piotrulla.craftinglib.action.CraftingAction;
+import dev.piotrulla.craftinglib.action.dispatcher.CraftingActionDispatcher;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * Controller interface for handling crafting logic.
  */
-public interface CraftingEventController<T, E extends CraftingEvent> {
+public interface CraftingEventController<T, E extends CraftingAction> {
 
     /**
      * Processes a craft attempt.
@@ -32,10 +32,10 @@ public interface CraftingEventController<T, E extends CraftingEvent> {
     ValidationResult validateCraft(@NotNull CraftingRecipe<T> recipe, @NotNull Object context);
 
     /**
-     * Gets the event dispatcher for this controller.
+     * Gets the action dispatcher for this controller.
      */
     @NotNull
-    CraftingEventDispatcher<E> getEventDispatcher();
+    CraftingActionDispatcher<E> getEventDispatcher();
 
     /**
      * Result of a craft attempt.

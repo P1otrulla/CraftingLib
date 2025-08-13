@@ -2,8 +2,8 @@ package dev.piotrulla.craftinglib.controller;
 
 import dev.piotrulla.craftinglib.CraftingRecipe;
 import dev.piotrulla.craftinglib.CraftingRecipeManager;
-import dev.piotrulla.craftinglib.event.CraftingEvent;
-import dev.piotrulla.craftinglib.event.dispatcher.CraftingEventDispatcher;
+import dev.piotrulla.craftinglib.action.CraftingAction;
+import dev.piotrulla.craftinglib.action.dispatcher.CraftingActionDispatcher;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -13,29 +13,29 @@ import java.util.logging.Logger;
 /**
  * Abstract base implementation of CraftingController.
  */
-public abstract class AbstractCraftingController<T, E extends CraftingEvent>
+public abstract class AbstractCraftingController<T, E extends CraftingAction>
         implements CraftingEventController<T, E> {
 
     protected final CraftingRecipeManager<T> recipeManager;
-    protected final CraftingEventDispatcher<E> eventDispatcher;
+    protected final CraftingActionDispatcher<E> eventDispatcher;
     protected final Logger logger;
     protected final boolean debugMode;
 
     protected AbstractCraftingController(
+            @NotNull CraftingActionDispatcher<E> eventDispatcher,
             @NotNull CraftingRecipeManager<T> recipeManager,
-            @NotNull CraftingEventDispatcher<E> eventDispatcher,
             @NotNull Logger logger,
             boolean debugMode
     ) {
-        this.recipeManager = Objects.requireNonNull(recipeManager, "Recipe manager cannot be null");
         this.eventDispatcher = Objects.requireNonNull(eventDispatcher, "Event dispatcher cannot be null");
+        this.recipeManager = Objects.requireNonNull(recipeManager, "Recipe manager cannot be null");
         this.logger = Objects.requireNonNull(logger, "Logger cannot be null");
         this.debugMode = debugMode;
     }
 
     @Override
     @NotNull
-    public CraftingEventDispatcher<E> getEventDispatcher() {
+    public CraftingActionDispatcher<E> getEventDispatcher() {
         return this.eventDispatcher;
     }
 

@@ -1,24 +1,24 @@
-package dev.piotrulla.craftinglib.event;
+package dev.piotrulla.craftinglib.action;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.time.Instant;
 
-public interface CraftingEvent {
+public interface CraftingAction {
 
     /**
-     * Gets the type of this event.
+     * Gets the type of this action.
      */
     @NotNull
-    CraftingEvent.Type getType();
+    CraftingAction.Type type();
 
     /**
-     * Gets when this event occurred.
+     * Gets when this action occurred.
      */
-    Instant getTimestamp();
+    Instant timestamp();
 
     /**
-     * Standard event types that all platforms should support.
+     * Standard action types that all platforms should support.
      */
     enum Type {
         CRAFT_SUCCESS,

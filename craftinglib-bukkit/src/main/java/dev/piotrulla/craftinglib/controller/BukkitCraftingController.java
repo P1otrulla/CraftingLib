@@ -5,10 +5,10 @@ import dev.piotrulla.craftinglib.BukkitCraftingRecipeIngredient;
 import dev.piotrulla.craftinglib.BukkitCraftingRecipeManager;
 import dev.piotrulla.craftinglib.CraftingRecipe;
 import dev.piotrulla.craftinglib.CraftingRecipeIngredient;
-import dev.piotrulla.craftinglib.event.BukkitCraftingEvent;
-import dev.piotrulla.craftinglib.event.BukkitCraftingTypedEvent;
-import dev.piotrulla.craftinglib.event.CraftingEvent;
-import dev.piotrulla.craftinglib.event.dispatcher.BukkitCraftingEventDispatcher;
+import dev.piotrulla.craftinglib.action.BukkitCraftingAction;
+import dev.piotrulla.craftinglib.action.BukkitCraftingTypedAction;
+import dev.piotrulla.craftinglib.action.CraftingAction;
+import dev.piotrulla.craftinglib.action.dispatcher.BukkitCraftingActionDispatcher;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.CraftItemEvent;
@@ -26,14 +26,14 @@ import java.util.stream.Collectors;
 /**
  * Bukkit implementation of CraftingController.
  */
-public class BukkitCraftingController extends AbstractCraftingController<ItemStack, BukkitCraftingEvent> {
+public class BukkitCraftingController extends AbstractCraftingController<ItemStack, BukkitCraftingAction> {
 
     private static final ItemStack AIR_ITEM = new ItemStack(Material.AIR);
     private static final int MATRIX_2X2 = 4;
     private static final int MATRIX_3X3 = 9;
 
     public BukkitCraftingController(@NotNull BukkitCraftingRecipeManager recipeManager,
-                                    @NotNull BukkitCraftingEventDispatcher eventDispatcher,
+                                    @NotNull BukkitCraftingActionDispatcher eventDispatcher,
                                     @NotNull Logger logger,
                                     boolean debugMode) {
         super(recipeManager, eventDispatcher, logger, debugMode);
@@ -41,11 +41,11 @@ public class BukkitCraftingController extends AbstractCraftingController<ItemSta
 
     public BukkitCraftingController(@NotNull BukkitCraftingRecipeManager recipeManager,
                                     @NotNull Logger logger) {
-        this(recipeManager, new BukkitCraftingEventDispatcher(logger), logger, false);
+        this(recipeManager, new BukkitCraftingActionDispatcher(logger), logger, false);
     }
 
     /**
-     * Handles the prepare craft event - shows preview.
+     * Handles the prepare craft action - shows preview.
      */
     public void handlePrepareCraft(@NotNull PrepareItemCraftEvent event) {
         CraftingInventory inventory = event.getInventory();
@@ -69,7 +69,7 @@ public class BukkitCraftingController extends AbstractCraftingController<ItemSta
     }
 
     /**
-     * Handles the actual craft event.
+     * Handles the actual craft action.
      */
     public void handleCraftItem(@NotNull CraftItemEvent event) {
         if (!(event.getWhoClicked() instanceof Player)) {
@@ -87,8 +87,8 @@ public class BukkitCraftingController extends AbstractCraftingController<ItemSta
             ItemStack craftedItem = event.getCurrentItem();
 
             if (craftedItem != null && craftedItem.getType() != Material.AIR) {
-                BukkitCraftingTypedEvent successEvent = new BukkitCraftingTypedEvent(
-                        player, recipe, CraftingEvent.Type.CRAFT_SUCCESS, craftedItem, craftedItem.getAmount()
+                BukkitCraftingTypedAction successEvent = new BukkitCraftingTypedAction(
+                        player, recipe, CraftingAction.Type.CRAFT_SUCCESS, craftedItem, craftedItem.getAmount()
                 );
                 this.eventDispatcher.fireEvent(successEvent);
             }
@@ -144,8 +144,7 @@ public class BukkitCraftingController extends AbstractCraftingController<ItemSta
     }
 
     @Nullable
-    private BukkitCraftingRecipe findMatchingRecipe(@NotNull ItemStack[] matrix,
-                                                    @NotNull CraftingInventory inventory) {
+    private BukkitCraftingRecipe findMatchingRecipe(@NotNull ItemStack[] matrix, @NotNull CraftingInventory inventory) {
         BukkitCraftingRecipe.CraftingType type = this.determineCraftingType(inventory);
         return ((BukkitCraftingRecipeManager) this.recipeManager).findMatchingRecipe(matrix, type);
     }
