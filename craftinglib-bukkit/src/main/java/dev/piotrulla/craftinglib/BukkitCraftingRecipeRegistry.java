@@ -134,7 +134,7 @@ public class BukkitCraftingRecipeRegistry implements CraftingRecipeRegistry<Item
                     bukkitRecipe.id()
             );
 
-            if (bukkitRecipe.getCraftingType() == BukkitCraftingRecipe.CraftingType.PLAYER_INVENTORY_2X2) {
+            if (bukkitRecipe.getInventoryType() == BukkitCraftingRecipe.InventoryType.CRAFTING_TABLE_2X2) {
                 setup2x2Recipe(recipe, bukkitRecipe);
             }
             else {

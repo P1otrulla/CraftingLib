@@ -115,9 +115,9 @@ public class BukkitCraftingRecipeManager implements CraftingRecipeManager<ItemSt
      */
     @Nullable
     public BukkitCraftingRecipe findMatchingRecipe(@NotNull ItemStack[] craftingMatrix,
-                                                   @NotNull BukkitCraftingRecipe.CraftingType type) {
+                                                   @NotNull BukkitCraftingRecipe.InventoryType type) {
         for (BukkitCraftingRecipe recipe : this.recipesById.values()) {
-            if (recipe.getCraftingType() == type && recipe.matchesCraftingMatrix(craftingMatrix)) {
+            if (recipe.getInventoryType() == type && recipe.matchesCraftingMatrix(craftingMatrix)) {
                 return recipe;
             }
         }
@@ -135,7 +135,7 @@ public class BukkitCraftingRecipeManager implements CraftingRecipeManager<ItemSt
     }
 
     /**
-     * Gets all Bukkit recipes.
+     * Gets all custom Bukkit recipes.
      */
     @NotNull
     public Collection<BukkitCraftingRecipe> getAllBukkitRecipes() {

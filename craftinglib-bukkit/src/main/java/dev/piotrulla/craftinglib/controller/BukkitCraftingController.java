@@ -145,7 +145,7 @@ public class BukkitCraftingController extends AbstractCraftingController<ItemSta
 
     @Nullable
     private BukkitCraftingRecipe findMatchingRecipe(@NotNull ItemStack[] matrix, @NotNull CraftingInventory inventory) {
-        BukkitCraftingRecipe.CraftingType type = this.determineCraftingType(inventory);
+        BukkitCraftingRecipe.InventoryType type = this.determineCraftingType(inventory);
         return ((BukkitCraftingRecipeManager) this.recipeManager).findMatchingRecipe(matrix, type);
     }
 
@@ -159,17 +159,17 @@ public class BukkitCraftingController extends AbstractCraftingController<ItemSta
     }
 
     @NotNull
-    private BukkitCraftingRecipe.CraftingType determineCraftingType(@NotNull CraftingInventory inventory) {
+    private BukkitCraftingRecipe.InventoryType determineCraftingType(@NotNull CraftingInventory inventory) {
         int matrixSize = inventory.getMatrix().length;
 
         switch (matrixSize) {
             case MATRIX_2X2:
-                return BukkitCraftingRecipe.CraftingType.PLAYER_INVENTORY_2X2;
+                return BukkitCraftingRecipe.InventoryType.CRAFTING_TABLE_2X2;
             case MATRIX_3X3:
-                return BukkitCraftingRecipe.CraftingType.CRAFTING_TABLE_3X3;
+                return BukkitCraftingRecipe.InventoryType.CRAFTING_TABLE_3X3;
             default:
                 this.logger.warning("Unexpected crafting matrix size: " + matrixSize);
-                return BukkitCraftingRecipe.CraftingType.CRAFTING_TABLE_3X3;
+                return BukkitCraftingRecipe.InventoryType.CRAFTING_TABLE_3X3;
         }
     }
 }

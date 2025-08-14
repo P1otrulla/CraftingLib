@@ -1,5 +1,6 @@
 package dev.piotrulla.craftinglib.builder;
 
+import dev.piotrulla.craftinglib.InventoryType;
 import dev.piotrulla.craftinglib.pattern.BukkitCraftingPattern;
 import dev.piotrulla.craftinglib.BukkitCraftingRecipe;
 import dev.piotrulla.craftinglib.BukkitCraftingRecipeIngredient;
@@ -16,7 +17,7 @@ import java.util.Objects;
  */
 public class BukkitCraftingBuilder extends CraftingRecipeBuilder<ItemStack, BukkitCraftingRecipe> {
 
-    private BukkitCraftingRecipe.CraftingType craftingType = BukkitCraftingRecipe.CraftingType.CRAFTING_TABLE_3X3;
+    private InventoryType inventoryType = InventoryType.CRAFTING_TABLE_3X3;
 
     private BukkitCraftingBuilder(@NotNull String name) {
         super(name);
@@ -37,7 +38,7 @@ public class BukkitCraftingBuilder extends CraftingRecipeBuilder<ItemStack, Bukk
         this.validatePatternRow(row3, "Third", 3);
 
         this.pattern = Arrays.asList(row1, row2, row3);
-        this.craftingType = BukkitCraftingRecipe.CraftingType.CRAFTING_TABLE_3X3;
+        this.inventoryType = InventoryType.CRAFTING_TABLE_3X3;
         return this;
     }
 
@@ -45,12 +46,12 @@ public class BukkitCraftingBuilder extends CraftingRecipeBuilder<ItemStack, Bukk
      * Sets a 2x2 player inventory pattern.
      */
     @NotNull
-    public BukkitCraftingBuilder withPlayerPattern(@NotNull String row1, @NotNull String row2) {
+    public BukkitCraftingBuilder withPattern(@NotNull String row1, @NotNull String row2) {
         this.validatePatternRow(row1, "First", 2);
         this.validatePatternRow(row2, "Second", 2);
 
         this.pattern = Arrays.asList(row1, row2);
-        this.craftingType = BukkitCraftingRecipe.CraftingType.PLAYER_INVENTORY_2X2;
+        this.inventoryType = InventoryType.PLAYER_INVENTORY_2X2;
         return this;
     }
 
@@ -134,13 +135,13 @@ public class BukkitCraftingBuilder extends CraftingRecipeBuilder<ItemStack, Bukk
         this.validateBuildState();
 
         String id = this.generateId();
-        int width = this.craftingType == BukkitCraftingRecipe.CraftingType.PLAYER_INVENTORY_2X2 ? 2 : 3;
-        int height = this.craftingType == BukkitCraftingRecipe.CraftingType.PLAYER_INVENTORY_2X2 ? 2 : 3;
+        int width = this.inventoryType == InventoryType.PLAYER_INVENTORY_2X2 ? 2 : 3;
+        int height = this.inventoryType == InventoryType.PLAYER_INVENTORY_2X2 ? 2 : 3;
 
         BukkitCraftingPattern craftingPattern = new BukkitCraftingPattern(this.pattern, width, height, this.ingredientMap);
         BukkitCraftingRecipeIngredient resultIngredient = new BukkitCraftingRecipeIngredient(this.result);
 
-        return new BukkitCraftingRecipe(this.name, id, craftingPattern, resultIngredient, this.exactMatch, this.replaceVanilla, this.craftingType);
+        return new BukkitCraftingRecipe(this.name, id, craftingPattern, resultIngredient, this.exactMatch, this.replaceVanilla, this.inventoryType);
     }
 
     @Deprecated

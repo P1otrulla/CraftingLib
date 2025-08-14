@@ -21,7 +21,7 @@ public abstract class CraftingRecipeBuilder<T, R extends CraftingRecipe<T>> {
 
     protected CraftingRecipeBuilder(@NotNull String name) {
         if (name == null || name.trim().isEmpty()) {
-            throw new IllegalArgumentException("Recipe name cannot be null or empty");
+            throw new CraftingException("Recipe name cannot be null or empty");
         }
         this.name = name.trim();
     }
