@@ -3,7 +3,7 @@ package dev.piotrulla.craftinglib;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public interface CraftingRecipeIngredient<T> {
+public interface RecipeIngredient<T> {
 
     @NotNull
     T item();
@@ -13,5 +13,5 @@ public interface CraftingRecipeIngredient<T> {
     @Nullable
     Object metaData();
 
-    boolean matches(@NotNull CraftingRecipeIngredient<T> other, boolean exactMatch);
+    boolean matches(@NotNull RecipeIngredient<T> other, boolean exactMatch);
 }

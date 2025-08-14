@@ -1,6 +1,6 @@
 package dev.piotrulla.craftinglib;
 
-import dev.piotrulla.craftinglib.pattern.CraftingPattern;
+import dev.piotrulla.craftinglib.pattern.RecipePattern;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -11,12 +11,12 @@ import java.util.Collections;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-public class BukkitCraftingRecipe implements CraftingRecipe<ItemStack> {
+public class BukkitRecipe implements Recipe<ItemStack> {
 
     private final String name;
     private final String id;
-    private final CraftingPattern<ItemStack> pattern;
-    private final BukkitCraftingRecipeIngredient result;
+    private final RecipePattern<ItemStack> pattern;
+    private final BukkitRecipeIngredient result;
     private final boolean exactMatch;
     private final boolean replaceVanilla;
     private final InventoryType inventoryType;
@@ -27,10 +27,10 @@ public class BukkitCraftingRecipe implements CraftingRecipe<ItemStack> {
     private final SingleInputRecipeData singleInputData;
 
     // Constructor for crafting recipes (shaped/shapeless)
-    public BukkitCraftingRecipe(
+    public BukkitRecipe(
             @NotNull String name, @NotNull String id,
-            @NotNull CraftingPattern<ItemStack> pattern,
-            @NotNull BukkitCraftingRecipeIngredient result,
+            @NotNull RecipePattern<ItemStack> pattern,
+            @NotNull BukkitRecipeIngredient result,
             boolean exactMatch, boolean replaceVanilla,
             @NotNull InventoryType inventoryType,
             @NotNull RecipeType recipeType
@@ -39,10 +39,10 @@ public class BukkitCraftingRecipe implements CraftingRecipe<ItemStack> {
     }
 
     // Constructor for cooking recipes
-    public BukkitCraftingRecipe(
+    public BukkitRecipe(
             @NotNull String name, @NotNull String id,
             @NotNull SingleInputRecipeData inputData,
-            @NotNull BukkitCraftingRecipeIngredient result,
+            @NotNull BukkitRecipeIngredient result,
             @NotNull InventoryType inventoryType,
             @NotNull RecipeType recipeType,
             @NotNull CookingRecipeData cookingData
@@ -51,10 +51,10 @@ public class BukkitCraftingRecipe implements CraftingRecipe<ItemStack> {
     }
 
     // Constructor for smithing recipes
-    public BukkitCraftingRecipe(
+    public BukkitRecipe(
             @NotNull String name, @NotNull String id,
             @NotNull SmithingRecipeData smithingData,
-            @NotNull BukkitCraftingRecipeIngredient result,
+            @NotNull BukkitRecipeIngredient result,
             @NotNull InventoryType inventoryType,
             @NotNull RecipeType recipeType
     ) {
@@ -62,10 +62,10 @@ public class BukkitCraftingRecipe implements CraftingRecipe<ItemStack> {
     }
 
     // Constructor for stonecutting recipes
-    public BukkitCraftingRecipe(
+    public BukkitRecipe(
             @NotNull String name, @NotNull String id,
             @NotNull SingleInputRecipeData inputData,
-            @NotNull BukkitCraftingRecipeIngredient result,
+            @NotNull BukkitRecipeIngredient result,
             @NotNull InventoryType inventoryType,
             @NotNull RecipeType recipeType
     ) {
@@ -73,10 +73,10 @@ public class BukkitCraftingRecipe implements CraftingRecipe<ItemStack> {
     }
 
     // Master constructor
-    private BukkitCraftingRecipe(
+    private BukkitRecipe(
             @NotNull String name, @NotNull String id,
-            @Nullable CraftingPattern<ItemStack> pattern,
-            @NotNull BukkitCraftingRecipeIngredient result,
+            @Nullable RecipePattern<ItemStack> pattern,
+            @NotNull BukkitRecipeIngredient result,
             boolean exactMatch, boolean replaceVanilla,
             @NotNull InventoryType inventoryType,
             @NotNull RecipeType recipeType,
@@ -145,20 +145,20 @@ public class BukkitCraftingRecipe implements CraftingRecipe<ItemStack> {
 
     @Override
     @NotNull
-    public List<CraftingRecipeIngredient<ItemStack>> ingredients() {
+    public List<RecipeIngredient<ItemStack>> ingredients() {
         if (this.pattern != null) {
             return this.pattern.getIngredients();
         }
         // For single input recipes - JAVA 11 COMPATIBLE
         if (this.singleInputData != null) {
-            return Collections.singletonList(new BukkitCraftingRecipeIngredient(this.singleInputData.input()));
+            return Collections.singletonList(new BukkitRecipeIngredient(this.singleInputData.input()));
         }
         // For smithing recipes - JAVA 11 COMPATIBLE
         if (this.smithingData != null) {
             return Arrays.asList(
-                    new BukkitCraftingRecipeIngredient(this.smithingData.template()),
-                    new BukkitCraftingRecipeIngredient(this.smithingData.base()),
-                    new BukkitCraftingRecipeIngredient(this.smithingData.addition())
+                    new BukkitRecipeIngredient(this.smithingData.template()),
+                    new BukkitRecipeIngredient(this.smithingData.base()),
+                    new BukkitRecipeIngredient(this.smithingData.addition())
             );
         }
         return Collections.emptyList(); // Instead of List.of()
@@ -166,18 +166,18 @@ public class BukkitCraftingRecipe implements CraftingRecipe<ItemStack> {
 
     @Override
     @NotNull
-    public CraftingRecipeIngredient<ItemStack> result() {
+    public RecipeIngredient<ItemStack> result() {
         return this.result;
     }
 
     @Override
-    public boolean matches(@NotNull List<CraftingRecipeIngredient<ItemStack>> input) {
+    public boolean matches(@NotNull List<RecipeIngredient<ItemStack>> input) {
         if (this.pattern != null) {
             return this.pattern.matches(input);
         }
         // For single input recipes, just check if input matches
         if (this.singleInputData != null && !input.isEmpty()) {
-            CraftingRecipeIngredient<ItemStack> required = new BukkitCraftingRecipeIngredient(this.singleInputData.input());
+            RecipeIngredient<ItemStack> required = new BukkitRecipeIngredient(this.singleInputData.input());
             return required.matches(input.get(0), this.exactMatch);
         }
         return false;
@@ -203,7 +203,7 @@ public class BukkitCraftingRecipe implements CraftingRecipe<ItemStack> {
     }
 
     @Nullable
-    public CraftingPattern<ItemStack> getPattern() {
+    public RecipePattern<ItemStack> getPattern() {
         return this.pattern;
     }
 
@@ -248,15 +248,15 @@ public class BukkitCraftingRecipe implements CraftingRecipe<ItemStack> {
             return false;
         }
 
-        List<CraftingRecipeIngredient<ItemStack>> matrixIngredients = convertToIngredients(craftingMatrix);
+        List<RecipeIngredient<ItemStack>> matrixIngredients = convertToIngredients(craftingMatrix);
         return this.matches(matrixIngredients);
     }
 
-    private List<CraftingRecipeIngredient<ItemStack>> convertToIngredients(ItemStack[] matrix) {
+    private List<RecipeIngredient<ItemStack>> convertToIngredients(ItemStack[] matrix) {
         return java.util.Arrays.stream(matrix)
-                .map(item -> item != null ? new BukkitCraftingRecipeIngredient(item) : null)
+                .map(item -> item != null ? new BukkitRecipeIngredient(item) : null)
                 .filter(Objects::nonNull)
-                .map(ingredient -> (CraftingRecipeIngredient<ItemStack>) ingredient)
+                .map(ingredient -> (RecipeIngredient<ItemStack>) ingredient)
                 .collect(Collectors.toList());
     }
 }

@@ -1,12 +1,11 @@
 package dev.piotrulla.craftinglib;
 
-import dev.piotrulla.craftinglib.registry.CraftingRecipeRegistry;
+import dev.piotrulla.craftinglib.registry.RecipeRegistry;
 import dev.piotrulla.craftinglib.registry.RegistryException;
 import dev.piotrulla.craftinglib.version.VersionAdapter;
 import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.jetbrains.annotations.NotNull;
 
@@ -14,7 +13,7 @@ import java.util.Iterator;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class BukkitCraftingRecipeRegistry implements CraftingRecipeRegistry<ItemStack> {
+public class BukkitRecipeRegistry implements RecipeRegistry<ItemStack> {
 
     private static final char[] CHARS_3X3 = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'};
     private static final char[] CHARS_2X2 = {'A', 'B', 'C', 'D'};
@@ -23,18 +22,18 @@ public class BukkitCraftingRecipeRegistry implements CraftingRecipeRegistry<Item
     private final VersionAdapter versionAdapter;
     private final AtomicInteger registeredCount = new AtomicInteger(0);
 
-    public BukkitCraftingRecipeRegistry(@NotNull Server server, @NotNull VersionAdapter versionAdapter) {
+    public BukkitRecipeRegistry(@NotNull Server server, @NotNull VersionAdapter versionAdapter) {
         this.server = Objects.requireNonNull(server, "Server cannot be null");
         this.versionAdapter = Objects.requireNonNull(versionAdapter, "Version adapter cannot be null");
     }
 
     @Override
-    public void addRecipe(@NotNull CraftingRecipe<ItemStack> recipe) throws RegistryException {
-        if (!(recipe instanceof BukkitCraftingRecipe)) {
+    public void addRecipe(@NotNull Recipe<ItemStack> recipe) throws RegistryException {
+        if (!(recipe instanceof BukkitRecipe)) {
             throw new RegistryException("Recipe must be a BukkitRecipe, got: " + recipe.getClass().getSimpleName());
         }
 
-        BukkitCraftingRecipe bukkitRecipe = (BukkitCraftingRecipe) recipe;
+        BukkitRecipe bukkitRecipe = (BukkitRecipe) recipe;
 
         try {
             ShapedRecipe shapedRecipe = createShapedRecipe(bukkitRecipe);
@@ -47,12 +46,12 @@ public class BukkitCraftingRecipeRegistry implements CraftingRecipeRegistry<Item
     }
 
     @Override
-    public void removeRecipe(@NotNull CraftingRecipe<ItemStack> recipe) throws RegistryException {
-        if (!(recipe instanceof BukkitCraftingRecipe)) {
+    public void removeRecipe(@NotNull Recipe<ItemStack> recipe) throws RegistryException {
+        if (!(recipe instanceof BukkitRecipe)) {
             throw new RegistryException("Recipe must be a BukkitRecipe, got: " + recipe.getClass().getSimpleName());
         }
 
-        BukkitCraftingRecipe bukkitRecipe = (BukkitCraftingRecipe) recipe;
+        BukkitRecipe bukkitRecipe = (BukkitRecipe) recipe;
 
         try {
             removeRecipesByResult(bukkitRecipe.result().item());
@@ -75,10 +74,10 @@ public class BukkitCraftingRecipeRegistry implements CraftingRecipeRegistry<Item
 
     private int removeMatchingRecipes(@NotNull ItemStack itemStack) {
         int removedCount = 0;
-        Iterator<Recipe> iterator = this.server.recipeIterator();
+        Iterator<org.bukkit.inventory.Recipe> iterator = this.server.recipeIterator();
 
         while (iterator.hasNext()) {
-            Recipe recipe = iterator.next();
+            org.bukkit.inventory.Recipe recipe = iterator.next();
 
             if (this.shouldRemoveRecipe(recipe, itemStack)) {
                 iterator.remove();
@@ -89,13 +88,13 @@ public class BukkitCraftingRecipeRegistry implements CraftingRecipeRegistry<Item
         return removedCount;
     }
 
-    private boolean shouldRemoveRecipe(@NotNull Recipe recipe, @NotNull ItemStack itemStack) {
+    private boolean shouldRemoveRecipe(@NotNull org.bukkit.inventory.Recipe recipe, @NotNull ItemStack itemStack) {
         return recipe != null && recipe.getResult() == itemStack;
     }
 
     @Override
-    public boolean supportsRecipe(@NotNull CraftingRecipe<ItemStack> recipe) {
-        return recipe instanceof BukkitCraftingRecipe;
+    public boolean supportsRecipe(@NotNull Recipe<ItemStack> recipe) {
+        return recipe instanceof BukkitRecipe;
     }
 
     @Override
@@ -127,14 +126,14 @@ public class BukkitCraftingRecipeRegistry implements CraftingRecipeRegistry<Item
         return this.versionAdapter;
     }
 
-    private ShapedRecipe createShapedRecipe(BukkitCraftingRecipe bukkitRecipe) throws RegistryException {
+    private ShapedRecipe createShapedRecipe(BukkitRecipe bukkitRecipe) throws RegistryException {
         try {
             ShapedRecipe recipe = this.versionAdapter.createShapedRecipe(
                     bukkitRecipe.result().item(),
                     bukkitRecipe.id()
             );
 
-            if (bukkitRecipe.getInventoryType() == BukkitCraftingRecipe.InventoryType.CRAFTING_TABLE_2X2) {
+            if (bukkitRecipe.getInventoryType() == BukkitRecipe.InventoryType.CRAFTING_TABLE_2X2) {
                 setup2x2Recipe(recipe, bukkitRecipe);
             }
             else {
@@ -147,7 +146,7 @@ public class BukkitCraftingRecipeRegistry implements CraftingRecipeRegistry<Item
         }
     }
 
-    private void setup2x2Recipe(ShapedRecipe recipe, BukkitCraftingRecipe bukkitRecipe) throws RegistryException {
+    private void setup2x2Recipe(ShapedRecipe recipe, BukkitRecipe bukkitRecipe) throws RegistryException {
         try {
             recipe.shape("AB", "CD");
 
@@ -164,7 +163,7 @@ public class BukkitCraftingRecipeRegistry implements CraftingRecipeRegistry<Item
         }
     }
 
-    private void setup3x3Recipe(ShapedRecipe recipe, BukkitCraftingRecipe bukkitRecipe) throws RegistryException {
+    private void setup3x3Recipe(ShapedRecipe recipe, BukkitRecipe bukkitRecipe) throws RegistryException {
         try {
             recipe.shape("ABC", "DEF", "GHI");
 
@@ -182,7 +181,7 @@ public class BukkitCraftingRecipeRegistry implements CraftingRecipeRegistry<Item
         }
     }
 
-    private ItemStack[] extractIngredients(BukkitCraftingRecipe bukkitRecipe, int width, int height) {
+    private ItemStack[] extractIngredients(BukkitRecipe bukkitRecipe, int width, int height) {
         ItemStack[] result = new ItemStack[width * height];
 
         for (int row = 0; row < height; row++) {

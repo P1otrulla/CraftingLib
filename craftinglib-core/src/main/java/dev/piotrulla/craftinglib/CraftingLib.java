@@ -1,6 +1,6 @@
 package dev.piotrulla.craftinglib;
 
-import dev.piotrulla.craftinglib.registry.CraftingRecipeRegistry;
+import dev.piotrulla.craftinglib.registry.RecipeRegistry;
 import org.jetbrains.annotations.NotNull;
 
 public interface CraftingLib<T> {
@@ -9,13 +9,13 @@ public interface CraftingLib<T> {
      * Gets the recipe manager for this platform.
      */
     @NotNull
-    CraftingRecipeManager<T> getRecipeManager();
+    RecipeManager<T> getRecipeManager();
 
     /**
      * Gets the recipe registry for this platform.
      */
     @NotNull
-    CraftingRecipeRegistry<T> getRecipeRegistry();
+    RecipeRegistry<T> getRecipeRegistry();
 
     /**
      * Gets the platform identifier.

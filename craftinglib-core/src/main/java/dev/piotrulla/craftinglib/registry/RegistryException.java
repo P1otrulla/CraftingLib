@@ -1,8 +1,8 @@
 package dev.piotrulla.craftinglib.registry;
 
-import dev.piotrulla.craftinglib.exception.CraftingException;
+import dev.piotrulla.craftinglib.exception.RecipeException;
 
-public class RegistryException extends CraftingException {
+public class RegistryException extends RecipeException {
 
     public RegistryException(String message) {
         super(message);

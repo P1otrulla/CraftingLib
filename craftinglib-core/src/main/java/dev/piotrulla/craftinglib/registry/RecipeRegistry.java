@@ -1,9 +1,9 @@
 package dev.piotrulla.craftinglib.registry;
 
-import dev.piotrulla.craftinglib.CraftingRecipe;
+import dev.piotrulla.craftinglib.Recipe;
 import org.jetbrains.annotations.NotNull;
 
-public interface CraftingRecipeRegistry<T> {
+public interface RecipeRegistry<T> {
 
     /**
      * Adds a recipe to the platform's recipe system.
@@ -11,7 +11,7 @@ public interface CraftingRecipeRegistry<T> {
      * @param recipe the recipe to add
      * @throws RegistryException if the recipe cannot be added
      */
-    void addRecipe(@NotNull CraftingRecipe<T> recipe) throws RegistryException;
+    void addRecipe(@NotNull Recipe<T> recipe) throws RegistryException;
 
     /**
      * Removes a recipe from the platform's recipe system.
@@ -19,7 +19,7 @@ public interface CraftingRecipeRegistry<T> {
      * @param recipe the recipe to remove
      * @throws RegistryException if the recipe cannot be removed
      */
-    void removeRecipe(@NotNull CraftingRecipe<T> recipe) throws RegistryException;
+    void removeRecipe(@NotNull Recipe<T> recipe) throws RegistryException;
 
     /**
      * Removes all recipes that produce the given result item.
@@ -36,7 +36,7 @@ public interface CraftingRecipeRegistry<T> {
      * @param recipe the recipe to check
      * @return true if the recipe is supported, false otherwise
      */
-    boolean supportsRecipe(@NotNull CraftingRecipe<T> recipe);
+    boolean supportsRecipe(@NotNull Recipe<T> recipe);
 
     /**
      * Gets the number of recipes currently registered.

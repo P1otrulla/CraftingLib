@@ -1,7 +1,7 @@
 package dev.piotrulla.craftinglib.builder;
 
-import dev.piotrulla.craftinglib.exception.CraftingException;
-import dev.piotrulla.craftinglib.CraftingRecipe;
+import dev.piotrulla.craftinglib.Recipe;
+import dev.piotrulla.craftinglib.exception.RecipeException;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public abstract class CraftingRecipeBuilder<T, R extends CraftingRecipe<T>> {
+public abstract class RecipeBuilder<T, R extends Recipe<T>> {
 
     protected final String name;
     protected final Map<Character, T> ingredientMap = new HashMap<>();
@@ -19,40 +19,40 @@ public abstract class CraftingRecipeBuilder<T, R extends CraftingRecipe<T>> {
     protected boolean exactMatch = true;
     protected boolean replaceVanilla = false;
 
-    protected CraftingRecipeBuilder(@NotNull String name) {
+    protected RecipeBuilder(@NotNull String name) {
         if (name == null || name.trim().isEmpty()) {
-            throw new CraftingException("Recipe name cannot be null or empty");
+            throw new RecipeException("Recipe name cannot be null or empty");
         }
         this.name = name.trim();
     }
 
     @NotNull
-    public abstract CraftingRecipeBuilder<T, R> withIngredient(char symbol, @NotNull T ingredient);
+    public abstract RecipeBuilder<T, R> withIngredient(char symbol, @NotNull T ingredient);
 
     @NotNull
-    public abstract CraftingRecipeBuilder<T, R> withResult(@NotNull T result);
+    public abstract RecipeBuilder<T, R> withResult(@NotNull T result);
 
     @NotNull
     public abstract R build();
 
     @NotNull
-    public CraftingRecipeBuilder<T, R> requireExactMatch(boolean exactMatch) {
+    public RecipeBuilder<T, R> requireExactMatch(boolean exactMatch) {
         this.exactMatch = exactMatch;
         return this;
     }
 
     @NotNull
-    public CraftingRecipeBuilder<T, R> replaceVanillaRecipes(boolean replaceVanilla) {
+    public RecipeBuilder<T, R> replaceVanillaRecipes(boolean replaceVanilla) {
         this.replaceVanilla = replaceVanilla;
         return this;
     }
 
     protected void validateBuildState() {
         if (this.pattern == null) {
-            throw new CraftingException("Pattern must be set");
+            throw new RecipeException("Pattern must be set");
         }
         if (this.result == null) {
-            throw new CraftingException("Result must be set");
+            throw new RecipeException("Result must be set");
         }
 
         Set<Character> usedSymbols = new HashSet<>();
@@ -66,7 +66,7 @@ public abstract class CraftingRecipeBuilder<T, R extends CraftingRecipe<T>> {
 
         for (char symbol : usedSymbols) {
             if (!this.ingredientMap.containsKey(symbol)) {
-                throw new CraftingException("Pattern symbol '" + symbol + "' has no ingredient mapping");
+                throw new RecipeException("Pattern symbol '" + symbol + "' has no ingredient mapping");
             }
         }
     }
@@ -80,7 +80,7 @@ public abstract class CraftingRecipeBuilder<T, R extends CraftingRecipe<T>> {
 
     protected void validatePatternRow(String row, String rowName, int expectedLength) {
         if (row == null || row.length() != expectedLength) {
-            throw new CraftingException(rowName + " row must be exactly " + expectedLength + " characters");
+            throw new RecipeException(rowName + " row must be exactly " + expectedLength + " characters");
         }
     }
 }

@@ -1,7 +1,7 @@
 package dev.piotrulla.craftinglib.pattern;
 
-import dev.piotrulla.craftinglib.BukkitCraftingRecipeIngredient;
-import dev.piotrulla.craftinglib.CraftingRecipeIngredient;
+import dev.piotrulla.craftinglib.BukkitRecipeIngredient;
+import dev.piotrulla.craftinglib.RecipeIngredient;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -10,32 +10,32 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class BukkitCraftingPattern extends CraftingPattern<ItemStack> {
+public class BukkitRecipePattern extends RecipePattern<ItemStack> {
 
     private final Map<Character, ItemStack> ingredientMap;
-    private final List<CraftingRecipeIngredient<ItemStack>> ingredients;
+    private final List<RecipeIngredient<ItemStack>> ingredients;
 
-    public BukkitCraftingPattern(@NotNull List<String> rows, int width, int height,
-                                 @NotNull Map<Character, ItemStack> ingredientMap) {
+    public BukkitRecipePattern(@NotNull List<String> rows, int width, int height,
+                               @NotNull Map<Character, ItemStack> ingredientMap) {
         super(rows, width, height);
         this.ingredientMap = new HashMap<>(ingredientMap);
         this.ingredients = buildIngredientsList();
     }
 
     @Override
-    public List<CraftingRecipeIngredient<ItemStack>> getIngredients() {
+    public List<RecipeIngredient<ItemStack>> getIngredients() {
         return new ArrayList<>(this.ingredients);
     }
 
     @Override
-    public boolean matches(List<CraftingRecipeIngredient<ItemStack>> input) {
+    public boolean matches(List<RecipeIngredient<ItemStack>> input) {
         if (input.size() != this.ingredients.size()) {
             return false;
         }
 
         for (int i = 0; i < this.ingredients.size(); i++) {
-            CraftingRecipeIngredient<ItemStack> required = this.ingredients.get(i);
-            CraftingRecipeIngredient<ItemStack> actual = input.get(i);
+            RecipeIngredient<ItemStack> required = this.ingredients.get(i);
+            RecipeIngredient<ItemStack> actual = input.get(i);
 
             if (required == null && actual == null) {
                 continue;
@@ -81,8 +81,8 @@ public class BukkitCraftingPattern extends CraftingPattern<ItemStack> {
         return item != null ? item.clone() : null;
     }
 
-    private List<CraftingRecipeIngredient<ItemStack>> buildIngredientsList() {
-        List<CraftingRecipeIngredient<ItemStack>> result = new ArrayList<>();
+    private List<RecipeIngredient<ItemStack>> buildIngredientsList() {
+        List<RecipeIngredient<ItemStack>> result = new ArrayList<>();
 
         for (String row : this.rows()) {
             for (char symbol : row.toCharArray()) {
@@ -91,7 +91,7 @@ public class BukkitCraftingPattern extends CraftingPattern<ItemStack> {
                 }
                 else {
                     ItemStack item = ingredientMap.get(symbol);
-                    result.add(item != null ? new BukkitCraftingRecipeIngredient(item) : null);
+                    result.add(item != null ? new BukkitRecipeIngredient(item) : null);
                 }
             }
         }

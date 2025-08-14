@@ -1,9 +1,9 @@
 package dev.piotrulla.craftinglib.controller;
 
-import dev.piotrulla.craftinglib.CraftingRecipe;
-import dev.piotrulla.craftinglib.CraftingRecipeManager;
-import dev.piotrulla.craftinglib.action.CraftingAction;
-import dev.piotrulla.craftinglib.action.dispatcher.CraftingActionDispatcher;
+import dev.piotrulla.craftinglib.Recipe;
+import dev.piotrulla.craftinglib.RecipeManager;
+import dev.piotrulla.craftinglib.action.RecipeAction;
+import dev.piotrulla.craftinglib.action.dispatcher.RecipeActionDispatcher;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -13,17 +13,17 @@ import java.util.logging.Logger;
 /**
  * Abstract base implementation of CraftingController.
  */
-public abstract class AbstractCraftingController<T, E extends CraftingAction>
-        implements CraftingEventController<T, E> {
+public abstract class AbstractRecipeController<T, E extends RecipeAction>
+        implements RecipeEventController<T, E> {
 
-    protected final CraftingRecipeManager<T> recipeManager;
-    protected final CraftingActionDispatcher<E> eventDispatcher;
+    protected final RecipeManager<T> recipeManager;
+    protected final RecipeActionDispatcher<E> eventDispatcher;
     protected final Logger logger;
     protected final boolean debugMode;
 
-    protected AbstractCraftingController(
-            @NotNull CraftingActionDispatcher<E> eventDispatcher,
-            @NotNull CraftingRecipeManager<T> recipeManager,
+    protected AbstractRecipeController(
+            @NotNull RecipeActionDispatcher<E> eventDispatcher,
+            @NotNull RecipeManager<T> recipeManager,
             @NotNull Logger logger,
             boolean debugMode
     ) {
@@ -35,7 +35,7 @@ public abstract class AbstractCraftingController<T, E extends CraftingAction>
 
     @Override
     @NotNull
-    public CraftingActionDispatcher<E> getEventDispatcher() {
+    public RecipeActionDispatcher<E> getEventDispatcher() {
         return this.eventDispatcher;
     }
 
@@ -52,18 +52,18 @@ public abstract class AbstractCraftingController<T, E extends CraftingAction>
         private final boolean success;
         private final T result;
         private final String failureReason;
-        private final CraftingRecipe<T> recipe;
+        private final Recipe<T> recipe;
 
         private SimpleCraftEventResult(boolean success, @Nullable T result,
                                        @Nullable String failureReason,
-                                       @Nullable CraftingRecipe<T> recipe) {
+                                       @Nullable Recipe<T> recipe) {
             this.success = success;
             this.result = result;
             this.failureReason = failureReason;
             this.recipe = recipe;
         }
 
-        public static <T> SimpleCraftEventResult<T> success(@NotNull T result, @NotNull CraftingRecipe<T> recipe) {
+        public static <T> SimpleCraftEventResult<T> success(@NotNull T result, @NotNull Recipe<T> recipe) {
             return new SimpleCraftEventResult<>(true, result, null, recipe);
         }
 
@@ -90,7 +90,7 @@ public abstract class AbstractCraftingController<T, E extends CraftingAction>
 
         @Override
         @Nullable
-        public CraftingRecipe<T> getRecipe() {
+        public Recipe<T> getRecipe() {
             return this.recipe;
         }
     }

@@ -1,24 +1,24 @@
 package dev.piotrulla.craftinglib.action.dispatcher;
 
-import dev.piotrulla.craftinglib.action.CraftingAction;
-import dev.piotrulla.craftinglib.action.CraftingActionHandler;
+import dev.piotrulla.craftinglib.action.RecipeAction;
+import dev.piotrulla.craftinglib.action.RecipeActionHandler;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * Dispatcher for crafting events.
  * Manages action handlers and action firing.
  */
-public interface CraftingActionDispatcher<E extends CraftingAction> {
+public interface RecipeActionDispatcher<E extends RecipeAction> {
 
     /**
      * Registers an action handler.
      */
-    void addHandler(@NotNull CraftingActionHandler<E> handler);
+    void addHandler(@NotNull RecipeActionHandler<E> handler);
 
     /**
      * Removes an action handler.
      */
-    boolean removeHandler(@NotNull CraftingActionHandler<E> handler);
+    boolean removeHandler(@NotNull RecipeActionHandler<E> handler);
 
     /**
      * Fires an action to all registered handlers.

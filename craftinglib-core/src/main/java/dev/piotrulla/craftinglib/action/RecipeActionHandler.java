@@ -3,7 +3,7 @@ package dev.piotrulla.craftinglib.action;
 import org.jetbrains.annotations.NotNull;
 
 @FunctionalInterface
-public interface CraftingActionHandler<E extends CraftingAction> {
+public interface RecipeActionHandler<E extends RecipeAction> {
 
     /**
      * Handles a crafting action.

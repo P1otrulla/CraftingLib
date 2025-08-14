@@ -7,11 +7,11 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
-public class BukkitCraftingRecipeIngredient implements CraftingRecipeIngredient<ItemStack> {
+public class BukkitRecipeIngredient implements RecipeIngredient<ItemStack> {
 
     private final ItemStack item;
 
-    public BukkitCraftingRecipeIngredient(@NotNull ItemStack item) {
+    public BukkitRecipeIngredient(@NotNull ItemStack item) {
         this.item = Objects.requireNonNull(item, "Item cannot be null").clone();
     }
 
@@ -33,12 +33,12 @@ public class BukkitCraftingRecipeIngredient implements CraftingRecipeIngredient<
     }
 
     @Override
-    public boolean matches(@NotNull CraftingRecipeIngredient<ItemStack> other, boolean exactMatch) {
-        if (!(other instanceof BukkitCraftingRecipeIngredient)) {
+    public boolean matches(@NotNull RecipeIngredient<ItemStack> other, boolean exactMatch) {
+        if (!(other instanceof BukkitRecipeIngredient)) {
             return false;
         }
 
-        BukkitCraftingRecipeIngredient bukkitIngredient = (BukkitCraftingRecipeIngredient) other;
+        BukkitRecipeIngredient bukkitIngredient = (BukkitRecipeIngredient) other;
 
         ItemStack otherItem = bukkitIngredient.item();
 
@@ -80,7 +80,7 @@ public class BukkitCraftingRecipeIngredient implements CraftingRecipeIngredient<
         if (obj == null || this.getClass() != obj.getClass()) {
             return false;
         }
-        BukkitCraftingRecipeIngredient that = (BukkitCraftingRecipeIngredient) obj;
+        BukkitRecipeIngredient that = (BukkitRecipeIngredient) obj;
 
         return this.item.equals(that.item);
     }
@@ -92,7 +92,7 @@ public class BukkitCraftingRecipeIngredient implements CraftingRecipeIngredient<
 
     @Override
     public String toString() {
-        return "BukkitCraftingRecipeIngredient{" +
+        return "BukkitRecipeIngredient{" +
                 "type=" + this.item.getType() +
                 ", amount=" + this.item.getAmount() +
                 ", hasMeta=" + this.item.hasItemMeta() +

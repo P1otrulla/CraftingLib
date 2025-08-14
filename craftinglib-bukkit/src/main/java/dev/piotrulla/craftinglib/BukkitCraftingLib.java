@@ -1,6 +1,6 @@
 package dev.piotrulla.craftinglib;
 
-import dev.piotrulla.craftinglib.registry.CraftingRecipeRegistry;
+import dev.piotrulla.craftinglib.registry.RecipeRegistry;
 import dev.piotrulla.craftinglib.version.VersionDetector;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -11,16 +11,16 @@ import org.jetbrains.annotations.NotNull;
  */
 public class BukkitCraftingLib implements CraftingLib<ItemStack> {
 
-    private final BukkitCraftingRecipeRegistry registry;
-    private final BukkitCraftingRecipeManager manager;
+    private final BukkitRecipeRegistry registry;
+    private final BukkitRecipeManager manager;
     private final Plugin plugin;
 
     private boolean initialized = false;
 
     public BukkitCraftingLib(@NotNull Plugin plugin) {
         this.plugin = plugin;
-        this.registry = new BukkitCraftingRecipeRegistry(plugin.getServer(), VersionDetector.detectVersion(plugin));
-        this.manager = new BukkitCraftingRecipeManager(this.registry);
+        this.registry = new BukkitRecipeRegistry(plugin.getServer(), VersionDetector.detectVersion(plugin));
+        this.manager = new BukkitRecipeManager(this.registry);
     }
 
     @Override
@@ -39,13 +39,13 @@ public class BukkitCraftingLib implements CraftingLib<ItemStack> {
 
     @Override
     @NotNull
-    public CraftingRecipeManager<ItemStack> getRecipeManager() {
+    public RecipeManager<ItemStack> getRecipeManager() {
         return this.manager;
     }
 
     @Override
     @NotNull
-    public CraftingRecipeRegistry<ItemStack> getRecipeRegistry() {
+    public RecipeRegistry<ItemStack> getRecipeRegistry() {
         return this.registry;
     }
 

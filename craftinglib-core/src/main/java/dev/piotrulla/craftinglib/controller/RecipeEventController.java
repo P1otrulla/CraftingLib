@@ -1,15 +1,15 @@
 package dev.piotrulla.craftinglib.controller;
 
-import dev.piotrulla.craftinglib.CraftingRecipe;
-import dev.piotrulla.craftinglib.action.CraftingAction;
-import dev.piotrulla.craftinglib.action.dispatcher.CraftingActionDispatcher;
+import dev.piotrulla.craftinglib.Recipe;
+import dev.piotrulla.craftinglib.action.RecipeAction;
+import dev.piotrulla.craftinglib.action.dispatcher.RecipeActionDispatcher;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * Controller interface for handling crafting logic.
  */
-public interface CraftingEventController<T, E extends CraftingAction> {
+public interface RecipeEventController<T, E extends RecipeAction> {
 
     /**
      * Processes a craft attempt.
@@ -19,7 +19,7 @@ public interface CraftingEventController<T, E extends CraftingAction> {
      * @return the result of the craft attempt
      */
     @Nullable
-    CraftingEventController.CraftingEventResult<T> processCraft(@NotNull T[] matrix, @NotNull Object context);
+    RecipeEventController.CraftingEventResult<T> processCraft(@NotNull T[] matrix, @NotNull Object context);
 
     /**
      * Validates if a recipe can be crafted.
@@ -29,13 +29,13 @@ public interface CraftingEventController<T, E extends CraftingAction> {
      * @return validation result
      */
     @NotNull
-    ValidationResult validateCraft(@NotNull CraftingRecipe<T> recipe, @NotNull Object context);
+    ValidationResult validateCraft(@NotNull Recipe<T> recipe, @NotNull Object context);
 
     /**
      * Gets the action dispatcher for this controller.
      */
     @NotNull
-    CraftingActionDispatcher<E> getEventDispatcher();
+    RecipeActionDispatcher<E> getEventDispatcher();
 
     /**
      * Result of a craft attempt.
@@ -50,7 +50,7 @@ public interface CraftingEventController<T, E extends CraftingAction> {
         String getFailureReason();
 
         @Nullable
-        CraftingRecipe<T> getRecipe();
+        Recipe<T> getRecipe();
     }
 
     /**

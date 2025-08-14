@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public interface CraftingRecipe<T> {
+public interface Recipe<T> {
 
     @NotNull
     String name();
@@ -13,11 +13,11 @@ public interface CraftingRecipe<T> {
     String id();
 
     @NotNull
-    List<CraftingRecipeIngredient<T>> ingredients();
+    List<RecipeIngredient<T>> ingredients();
 
-    @NotNull CraftingRecipeIngredient<T> result();
+    @NotNull RecipeIngredient<T> result();
 
-    boolean matches(@NotNull List<CraftingRecipeIngredient<T>> input);
+    boolean matches(@NotNull List<RecipeIngredient<T>> input);
 
     boolean requiresExactMatch();
 }

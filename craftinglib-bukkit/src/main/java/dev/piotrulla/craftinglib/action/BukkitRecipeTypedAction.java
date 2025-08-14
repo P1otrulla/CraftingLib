@@ -1,23 +1,23 @@
 package dev.piotrulla.craftinglib.action;
 
-import dev.piotrulla.craftinglib.BukkitCraftingRecipe;
+import dev.piotrulla.craftinglib.BukkitRecipe;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-public class BukkitCraftingTypedAction extends BukkitCraftingAction {
+public class BukkitRecipeTypedAction extends BukkitRecipeAction {
 
-    private final BukkitCraftingRecipe recipe;
-    private final CraftingAction.Type type;
+    private final BukkitRecipe recipe;
+    private final RecipeAction.Type type;
     private final ItemStack result;
     private final int amount;
 
-    public BukkitCraftingTypedAction(
+    public BukkitRecipeTypedAction(
             @NotNull Player player,
-            @NotNull BukkitCraftingRecipe recipe,
-            @NotNull CraftingAction.Type type,
+            @NotNull BukkitRecipe recipe,
+            @NotNull RecipeAction.Type type,
             @NotNull ItemStack result,
             int amount
     ) {
@@ -28,12 +28,12 @@ public class BukkitCraftingTypedAction extends BukkitCraftingAction {
         this.amount = amount;
     }
 
-    public @NotNull BukkitCraftingRecipe recipe() {
+    public @NotNull BukkitRecipe recipe() {
         return this.recipe;
     }
 
     @Override
-    public @NotNull CraftingAction.Type type() {
+    public @NotNull RecipeAction.Type type() {
         return this.type;
     }
 

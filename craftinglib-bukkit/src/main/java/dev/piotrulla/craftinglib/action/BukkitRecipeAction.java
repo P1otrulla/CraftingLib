@@ -9,12 +9,12 @@ import java.util.Objects;
 /**
  * Base class for Bukkit crafting events.
  */
-public abstract class BukkitCraftingAction implements CraftingAction {
+public abstract class BukkitRecipeAction implements RecipeAction {
 
     protected final Player player;
     protected final Instant timestamp;
 
-    protected BukkitCraftingAction(@NotNull Player player) {
+    protected BukkitRecipeAction(@NotNull Player player) {
         this.player = Objects.requireNonNull(player, "Player cannot be null");
         this.timestamp = Instant.now();
     }

@@ -4,13 +4,13 @@ import org.jetbrains.annotations.NotNull;
 
 import java.time.Instant;
 
-public interface CraftingAction {
+public interface RecipeAction {
 
     /**
      * Gets the type of this action.
      */
     @NotNull
-    CraftingAction.Type type();
+    RecipeAction.Type type();
 
     /**
      * Gets when this action occurred.

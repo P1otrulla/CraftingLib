@@ -27,15 +27,15 @@ public class BukkitCraftingController implements Listener {
     private static final int MATRIX_2X2 = 4;
     private static final int MATRIX_3X3 = 9;
 
-    private final BukkitCraftingRecipeManager recipeManager;
+    private final BukkitRecipeManager recipeManager;
     private final Logger logger;
     private final boolean debugMode;
 
     @Nullable
-    private BiConsumer<Player, BukkitCraftingRecipe> onCraftSuccess;
+    private BiConsumer<Player, BukkitRecipe> onCraftSuccess;
 
     public BukkitCraftingController(
-            @NotNull BukkitCraftingRecipeManager recipeManager,
+            @NotNull BukkitRecipeManager recipeManager,
             @NotNull Logger logger,
             boolean debugMode
     ) {
@@ -46,7 +46,7 @@ public class BukkitCraftingController implements Listener {
     }
 
     public BukkitCraftingController(
-            @NotNull BukkitCraftingRecipeManager recipeManager,
+            @NotNull BukkitRecipeManager recipeManager,
             @NotNull Logger logger
     ) {
         this(recipeManager, logger, false);
@@ -56,7 +56,7 @@ public class BukkitCraftingController implements Listener {
      * Sets a callback to be executed when a player successfully crafts an item.
      * This allows external handling of craft events (messages, effects, etc.)
      */
-    public void setOnCraftSuccess(@Nullable BiConsumer<Player, BukkitCraftingRecipe> callback) {
+    public void setOnCraftSuccess(@Nullable BiConsumer<Player, BukkitRecipe> callback) {
         this.onCraftSuccess = callback;
     }
 
@@ -69,7 +69,7 @@ public class BukkitCraftingController implements Listener {
             return;
         }
 
-        BukkitCraftingRecipe customRecipe = this.findMatchingRecipe(matrix, inventory);
+        BukkitRecipe customRecipe = this.findMatchingRecipe(matrix, inventory);
 
         if (customRecipe != null) {
             ItemStack result = customRecipe.result().item().clone();
@@ -96,7 +96,7 @@ public class BukkitCraftingController implements Listener {
             return;
         }
 
-        BukkitCraftingRecipe customRecipe = this.findMatchingRecipe(matrix, inventory);
+        BukkitRecipe customRecipe = this.findMatchingRecipe(matrix, inventory);
 
         if (customRecipe != null) {
             this.handleCustomCraft(event, player, customRecipe);
@@ -109,7 +109,7 @@ public class BukkitCraftingController implements Listener {
 
     private void handleCustomCraft(@NotNull CraftItemEvent event,
                                    @NotNull Player player,
-                                   @NotNull BukkitCraftingRecipe recipe) {
+                                   @NotNull BukkitRecipe recipe) {
         // Let the action proceed with the custom result
         this.logDebug("Player " + player.getName() + " crafted: " + recipe.id());
 
@@ -120,9 +120,9 @@ public class BukkitCraftingController implements Listener {
     }
 
     @Nullable
-    private BukkitCraftingRecipe findMatchingRecipe(@NotNull ItemStack[] matrix,
-                                                    @NotNull CraftingInventory inventory) {
-        BukkitCraftingRecipe.InventoryType type = this.determineCraftingType(inventory);
+    private BukkitRecipe findMatchingRecipe(@NotNull ItemStack[] matrix,
+                                            @NotNull CraftingInventory inventory) {
+        BukkitRecipe.InventoryType type = this.determineCraftingType(inventory);
         return this.recipeManager.findMatchingRecipe(matrix, type);
     }
 
@@ -136,19 +136,19 @@ public class BukkitCraftingController implements Listener {
     }
 
     @NotNull
-    private BukkitCraftingRecipe.InventoryType determineCraftingType(@NotNull CraftingInventory inventory) {
+    private BukkitRecipe.InventoryType determineCraftingType(@NotNull CraftingInventory inventory) {
         int matrixSize = inventory.getMatrix().length;
 
         switch (matrixSize) {
             case MATRIX_2X2: {
-                return BukkitCraftingRecipe.InventoryType.CRAFTING_TABLE_2X2;
+                return BukkitRecipe.InventoryType.CRAFTING_TABLE_2X2;
             }
             case MATRIX_3X3: {
-                return BukkitCraftingRecipe.InventoryType.CRAFTING_TABLE_3X3;
+                return BukkitRecipe.InventoryType.CRAFTING_TABLE_3X3;
             }
             default: {
                 this.logger.warning("Unexpected crafting matrix size: " + matrixSize);
-                return BukkitCraftingRecipe.InventoryType.CRAFTING_TABLE_3X3;
+                return BukkitRecipe.InventoryType.CRAFTING_TABLE_3X3;
             }
         }
     }
