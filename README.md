@@ -96,23 +96,47 @@ They fail fast when they are functional: registering a recipe type the server ca
 
 ## Installation
 
-The library is not on a public repository yet, so publish it to your local Maven repository:
-
-```
-./gradlew publishToMavenLocal
-```
+Artifacts are published to the [EternalCode repository](https://repo.eternalcode.pl).
 
 ```kotlin
 repositories {
-    mavenLocal()
+    maven("https://repo.eternalcode.pl/releases")
 }
 
 dependencies {
-    implementation("dev.piotrulla:craftinglib-bukkit:4.0.0-SNAPSHOT")
+    implementation("dev.piotrulla:craftinglib-bukkit:4.0.0")
     // optional: YAML serialization of recipes
-    implementation("dev.piotrulla:craftinglib-bukkit-okaeri-serdes:4.0.0-SNAPSHOT")
+    implementation("dev.piotrulla:craftinglib-bukkit-okaeri-serdes:4.0.0")
 }
 ```
+
+<details>
+<summary>Maven</summary>
+
+```xml
+<repositories>
+    <repository>
+        <id>eternalcode-releases</id>
+        <url>https://repo.eternalcode.pl/releases</url>
+    </repository>
+</repositories>
+
+<dependencies>
+    <dependency>
+        <groupId>dev.piotrulla</groupId>
+        <artifactId>craftinglib-bukkit</artifactId>
+        <version>4.0.0</version>
+    </dependency>
+    <!-- optional: YAML serialization of recipes -->
+    <dependency>
+        <groupId>dev.piotrulla</groupId>
+        <artifactId>craftinglib-bukkit-okaeri-serdes</artifactId>
+        <version>4.0.0</version>
+    </dependency>
+</dependencies>
+```
+
+</details>
 
 Shade the library into your plugin and **relocate it**, so two plugins with different versions do not clash:
 
@@ -483,7 +507,11 @@ builders and a `PlatformRecipeRegistrar`.
 ```
 ./gradlew build                 # compile + tests
 ./gradlew publishToMavenLocal   # install into ~/.m2
+./gradlew publish               # publish to repo.eternalcode.pl (maintainers)
 ```
+
+Publishing reads the credentials from the `ETERNAL_CODE_MAVEN_USERNAME` and `ETERNAL_CODE_MAVEN_PASSWORD`
+environment variables.
 
 Build logic lives in `buildSrc` convention plugins (`craftinglib-java`, `craftinglib-paper`, `craftinglib-okaeri`,
 `craftinglib-junit`, `craftinglib-publish`), so each module pulls only the repositories and dependencies it needs.

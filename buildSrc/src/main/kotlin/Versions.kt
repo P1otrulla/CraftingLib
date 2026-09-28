@@ -1,5 +1,6 @@
 object Versions {
 
+    const val JAVA_TOOLCHAIN = 21
     const val JAVA_RELEASE = 11
     const val TESTS_JAVA_RELEASE = 17
 

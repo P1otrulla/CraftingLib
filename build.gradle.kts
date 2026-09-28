@@ -1,4 +1,4 @@
 allprojects {
     group = "dev.piotrulla"
-    version = "4.0.0-SNAPSHOT"
+    version = "4.0.0"
 }

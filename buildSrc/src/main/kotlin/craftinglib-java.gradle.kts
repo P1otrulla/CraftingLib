@@ -8,6 +8,8 @@ repositories {
 }
 
 java {
+    // javac 21 (paper-api classes are Java 21), bytecode still Java 11 via options.release
+    toolchain.languageVersion.set(JavaLanguageVersion.of(Versions.JAVA_TOOLCHAIN))
     withSourcesJar()
     withJavadocJar()
 }

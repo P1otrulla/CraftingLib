@@ -17,7 +17,7 @@ publishing {
             pom {
                 name.set(project.name)
                 description.set(project.description)
-                url.set("https://github.com/piotrulla/craftinglib")
+                url.set("github.com/P1otrulla/CraftingLib")
 
                 licenses {
                     license {
