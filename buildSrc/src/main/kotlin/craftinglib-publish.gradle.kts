@@ -1,8 +1,13 @@
-// Maven publication (./gradlew publishToMavenLocal).
 plugins {
     `java-library`
     `maven-publish`
 }
+
+java {
+    withSourcesJar()
+    withJavadocJar()
+}
+
 
 publishing {
     publications {
@@ -20,6 +25,18 @@ publishing {
                         url.set("https://www.gnu.org/licenses/lgpl-3.0.html")
                     }
                 }
+            }
+        }
+    }
+
+    repositories {
+        mavenLocal()
+        maven {
+            name = "eternalcodeReleases"
+            url = uri("https://repo.eternalcode.pl/releases")
+            credentials {
+                username = System.getenv("ETERNAL_CODE_MAVEN_USERNAME")
+                password = System.getenv("ETERNAL_CODE_MAVEN_PASSWORD")
             }
         }
     }
