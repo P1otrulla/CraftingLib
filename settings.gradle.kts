@@ -1,4 +1,8 @@
 rootProject.name = "craftinglib"
 
-include("craftinglib-src")
-include("example")
+include(
+    "craftinglib-core",
+    "craftinglib-bukkit",
+    "craftinglib-bukkit-okaeri-serdes",
+    "craftinglib-tests"
+)
