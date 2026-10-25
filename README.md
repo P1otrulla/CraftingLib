@@ -1,4 +1,5 @@
-# CraftingLib 4.0
+<img width="1280" height="640" alt="github-social-preview-1280x640" src="https://github.com/user-attachments/assets/a1a567e7-5096-4965-9918-91568982820e" />
+
 
 **Custom recipes for every station, on every Bukkit server from 1.8 to the latest Paper.**
 Shaped and shapeless crafting, furnaces, brewing, stonecutter, smithing table, anvil and grindstone, with exact item
