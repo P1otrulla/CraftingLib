@@ -22,12 +22,15 @@ differences are handled for you.
 </p>
 
 ```java
-this.craftingLib.getRecipeManager().registerRecipe(BukkitRecipes.shaped("super-pickaxe")
-        .withPattern("DDD", " S ", " S ")
-        .withIngredient('D', Material.DIAMOND_BLOCK, 3)
-        .withIngredient('S', Material.STICK)
-        .withResult(superPickaxe)
-        .build());
+this.craftingLib.getRecipeManager().registerRecipe(BukkitRecipes.shaped("ruby-sword")
+          .withPattern("R", "R", "S")
+          .withIngredient('R', this.items.ruby().asQuantity(RUBIES_PER_SWORD_SLOT))
+          .withIngredient('S', Material.STICK)
+          .withResult(this.items.rubySword())
+          .withMatchMode(MatchMode.PERSISTENT_DATA)
+          .withRecipeBookGroup(RUBY_TOOLS_GROUP)
+          .withRecipeBookCategory(RecipeBookCategory.EQUIPMENT)
+          .build());
 ```
 
 ---
@@ -240,16 +243,6 @@ These settings are shared by every builder:
   </tr>
 </table>
 
-```java
-BukkitRecipes.shaped("super-pickaxe")
-        .withPattern("DDD", " S ", " S ")
-        .withIngredient('D', Material.DIAMOND_BLOCK, 3)   // 3 blocks in every D slot
-        .withIngredient('S', Material.STICK)
-        .withResult(superPickaxe)
-        .withMirroring(false)                             // default: true
-        .build();
-```
-
 - The pattern has 1–3 rows of 1–3 characters, and a space means an empty slot. Empty borders are trimmed, so the pattern can sit anywhere in the grid.
 - Recipes that fit in 2x2 also work in the player inventory.
 - The amount in a slot is the number of items needed there. Shift-click crafts as many times as the ingredients and free space allow.
@@ -258,9 +251,9 @@ BukkitRecipes.shaped("super-pickaxe")
 
 ```java
 BukkitRecipes.shapeless("quick-bread")
-        .withIngredient(Material.WHEAT, 2)
         .withIngredient(Material.WHEAT)
-        .withResult(Material.BREAD, 3)
+        .withIngredient(Material.WHEAT)
+        .withResult(Material.BREAD, 2)
         .build();
 ```
 
@@ -286,12 +279,23 @@ Up to 9 ingredients, placed in any slots.
 </table>
 
 ```java
-BukkitRecipes.smelting("mithril-ingot")
-        .withCookingType(CookingType.BLASTING)   // FURNACE (default), BLASTING, SMOKING, CAMPFIRE
-        .withInput(mithrilOre)
-        .withResult(mithrilIngot)
-        .withExperience(1.5F)                    // default 0
-        .withCookingTime(80)                     // ticks, default: vanilla time of the station
+BukkitRecipes.smelting("ruby-ore-blasting")
+        .withCookingType(CookingType.BLASTING)
+        .withInput(this.items.rubyOre())
+        .withResult(this.items.ruby())
+        .withExperience(RUBY_EXPERIENCE)
+        .withCookingTime(FAST_BLASTING_TICKS)
+        .withRecipeBookGroup(RUBY_GROUP)
+        .withRecipeBookCategory(RecipeBookCategory.BLOCKS)
+        .build();
+```
+```java
+BukkitRecipes.smelting("ruby-ore")
+        .withInput(this.items.rubyOre())
+        .withResult(this.items.ruby())
+        .withExperience(RUBY_EXPERIENCE)
+        .withRecipeBookGroup(RUBY_GROUP)
+        .withRecipeBookCategory(RecipeBookCategory.BLOCKS)
         .build();
 ```
 
@@ -316,10 +320,10 @@ Registered as a Paper `PotionMix`. Input and ingredient amounts must be 1. Brewi
 ### Stonecutter (1.14+)
 
 ```java
-BukkitRecipes.stonecutting("cheap-bricks")
-        .withInput(Material.STONE)
-        .withResult(Material.STONE_BRICKS, 2)
-        .withRecipeBookGroup("bricks")
+BukkitRecipes.brewing("ruby-elixir")
+        .withInput(this.items.awkwardPotion())
+        .withIngredient(this.items.ruby())
+        .withResult(this.items.rubyPotion())
         .build();
 ```
 
@@ -332,11 +336,11 @@ BukkitRecipes.stonecutting("cheap-bricks")
 ### Smithing table (1.16+)
 
 ```java
-BukkitRecipes.smithing("mithril-sword")
-        .withTemplate(Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE)   // 1.20+: required, before: not allowed
+BukkitRecipes.smithing("ruby-blade")
+        .withTemplate(Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE)
         .withBase(Material.DIAMOND_SWORD)
-        .withAddition(mithrilIngot)
-        .withResult(mithrilSword)
+        .withAddition(this.items.ruby())
+        .withResult(this.items.rubyBlade())
         .build();
 ```
 
@@ -353,10 +357,10 @@ BukkitRecipes.smithing("mithril-sword")
 ```java
 BukkitRecipes.anvil("sharpen-sword")
         .withLeft(Material.IRON_SWORD)
-        .withRight(Material.FLINT, 4)    // both amounts are consumed
-        .withResult(sharpSword)
-        .withLevelCost(5)                // default 1
-        .build();
+        .withRight(this.items.ruby().asQuantity(RUBIES_PER_SHARPENING))
+        .withResult(this.items.sharpenedSword())
+        .withLevelCost(LEVEL_COST)
+        .build()
 ```
 
 The level cost is checked and taken from the player; creative players craft for free.
