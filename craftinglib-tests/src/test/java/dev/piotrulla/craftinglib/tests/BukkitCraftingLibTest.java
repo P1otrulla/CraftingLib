@@ -4,6 +4,7 @@ import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.ServerMock;
 import dev.piotrulla.craftinglib.bukkit.BukkitCraftingLib;
 import dev.piotrulla.craftinglib.bukkit.BukkitRecipes;
+import dev.piotrulla.craftinglib.bukkit.CraftingLibSettings;
 import dev.piotrulla.craftinglib.recipe.CraftingRecipe;
 import org.bukkit.Keyed;
 import org.bukkit.Material;
@@ -34,7 +35,7 @@ class BukkitCraftingLibTest {
     void setUp() {
         this.server = MockBukkit.mock();
         this.plugin = MockBukkit.createMockPlugin();
-        this.craftingLib = BukkitCraftingLib.create(this.plugin);
+        this.craftingLib = BukkitCraftingLib.create(this.plugin, CraftingLibSettings.builder().metrics(false).build());
     }
 
     @AfterEach
@@ -75,12 +76,12 @@ class BukkitCraftingLibTest {
 
     @Test
     void shouldRegisterGrindstoneRecipe() {
-        this.craftingLib.getGrindstoneManager().registerRecipe(BukkitRecipes.grindstone("scrap-torch")
-                .withInput(Material.TORCH)
-                .withResult(Material.STICK)
+        this.craftingLib.getGrindstoneManager().registerRecipe(BukkitRecipes.grindstone("scrap-sword")
+                .withInput(Material.IRON_SWORD)
+                .withResult(Material.IRON_NUGGET)
                 .build());
 
-        assertTrue(this.craftingLib.getGrindstoneManager().findRecipe("scrap-torch").isPresent());
+        assertTrue(this.craftingLib.getGrindstoneManager().findRecipe("scrap-sword").isPresent());
     }
 
     @Test

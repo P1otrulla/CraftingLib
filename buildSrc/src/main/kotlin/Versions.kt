@@ -10,4 +10,7 @@ object Versions {
 
     const val JUNIT = "5.10.2"
     const val MOCKBUKKIT = "3.9.0"
+
+    const val SHOWCASE_MINECRAFT = "26.2"
+    const val SHOWCASE_SERVER_JAVA = 25
 }

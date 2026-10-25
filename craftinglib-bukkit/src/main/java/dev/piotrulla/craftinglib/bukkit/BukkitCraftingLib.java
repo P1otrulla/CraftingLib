@@ -10,6 +10,8 @@ import dev.piotrulla.craftinglib.bukkit.listener.CraftingGuard;
 import dev.piotrulla.craftinglib.bukkit.listener.CraftingListener;
 import dev.piotrulla.craftinglib.bukkit.listener.GrindstoneListener;
 import dev.piotrulla.craftinglib.bukkit.listener.RecipeBookAutofillListener;
+import dev.piotrulla.craftinglib.bukkit.metrics.CraftingLibMetrics;
+import dev.piotrulla.craftinglib.bukkit.metrics.MetricsCharts;
 import dev.piotrulla.craftinglib.bukkit.registry.BukkitRecipeRegistrar;
 import dev.piotrulla.craftinglib.bukkit.registry.BukkitSmeltingRecipeRegistrar;
 import dev.piotrulla.craftinglib.bukkit.registry.BukkitSmithingRecipeRegistrar;
@@ -37,10 +39,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.Supplier;
 import java.util.logging.Logger;
@@ -57,6 +61,7 @@ import java.util.logging.Logger;
  * </pre>
  * Recipe types the server cannot handle fail on registration with {@link UnsupportedOperationException}.
  * Recipe book features (discovery, groups, categories, Paper autofill) are enabled where the server supports them.
+ * Anonymous usage statistics go to bStats unless disabled in {@link CraftingLibSettings} or {@code plugins/bStats/config.yml}.
  */
 public final class BukkitCraftingLib implements CraftingLib<ItemStack> {
 
@@ -66,6 +71,14 @@ public final class BukkitCraftingLib implements CraftingLib<ItemStack> {
     private static final String ANVIL_UNSUPPORTED = "Anvil recipes require Minecraft 1.11+";
     private static final String GRINDSTONE_UNSUPPORTED = "Grindstone recipes require a server with PrepareGrindstoneEvent (1.19.3+)";
 
+    private static final String TYPE_CRAFTING = "crafting";
+    private static final String TYPE_SMELTING = "smelting";
+    private static final String TYPE_BREWING = "brewing";
+    private static final String TYPE_STONECUTTING = "stonecutting";
+    private static final String TYPE_SMITHING = "smithing";
+    private static final String TYPE_ANVIL = "anvil";
+    private static final String TYPE_GRINDSTONE = "grindstone";
+
     private final CraftingRecipeManager<ItemStack> recipeManager;
     private final RecipeManager<SmeltingRecipe<ItemStack>> smeltingManager;
     private final RecipeManager<BrewingRecipe<ItemStack>> brewingManager;
@@ -74,11 +87,14 @@ public final class BukkitCraftingLib implements CraftingLib<ItemStack> {
     private final RecipeManager<AnvilRecipe<ItemStack>> anvilManager;
     private final RecipeManager<GrindstoneRecipe<ItemStack>> grindstoneManager;
     private final List<Listener> listeners = new ArrayList<>();
+    private final Map<String, RecipeManager<?>> managersByType = new LinkedHashMap<>();
+    @Nullable
+    private final CraftingLibMetrics metrics;
 
     /**
      * Composition root: wires managers and listeners, registers nothing in the server yet.
      */
-    private BukkitCraftingLib(Plugin plugin) {
+    private BukkitCraftingLib(Plugin plugin, CraftingLibSettings settings) {
         Logger logger = plugin.getLogger();
         VersionAdapter versionAdapter = VersionDetector.detect(plugin);
         RegistrarContext context = new RegistrarContext(plugin, versionAdapter, this.createRecipeBook(plugin));
@@ -96,6 +112,14 @@ public final class BukkitCraftingLib implements CraftingLib<ItemStack> {
         this.grindstoneManager = managerFor(VersionDetector.isGrindstoneSupported(), NoOpRecipeRegistrar::new,
                 GRINDSTONE_UNSUPPORTED);
 
+        this.managersByType.put(TYPE_CRAFTING, this.recipeManager);
+        this.managersByType.put(TYPE_SMELTING, this.smeltingManager);
+        this.managersByType.put(TYPE_BREWING, this.brewingManager);
+        this.managersByType.put(TYPE_STONECUTTING, this.stonecuttingManager);
+        this.managersByType.put(TYPE_SMITHING, this.smithingManager);
+        this.managersByType.put(TYPE_ANVIL, this.anvilManager);
+        this.managersByType.put(TYPE_GRINDSTONE, this.grindstoneManager);
+
         CraftingGuard craftingGuard = new CraftingGuard(this.recipeManager, craftingRegistrar);
         this.listeners.add(new CraftingListener(craftingGuard));
         if (VersionDetector.isCrafterSupported()) {
@@ -111,17 +135,28 @@ public final class BukkitCraftingLib implements CraftingLib<ItemStack> {
             this.listeners.add(new RecipeBookAutofillListener(this.recipeManager, versionAdapter));
         }
 
+        this.metrics = settings.isMetricsEnabled() ? this.startMetrics(plugin, versionAdapter) : null;
+
         logger.info("CraftingLib uses " + versionAdapter.getName() + " recipe adapter");
+    }
+
+    /**
+     * Detects server capabilities and registers the listeners, with {@link CraftingLibSettings#defaults()}.
+     */
+    @NotNull
+    public static BukkitCraftingLib create(@NotNull Plugin plugin) {
+        return create(plugin, CraftingLibSettings.defaults());
     }
 
     /**
      * Detects server capabilities and registers the listeners.
      */
     @NotNull
-    public static BukkitCraftingLib create(@NotNull Plugin plugin) {
+    public static BukkitCraftingLib create(@NotNull Plugin plugin, @NotNull CraftingLibSettings settings) {
         Objects.requireNonNull(plugin, "plugin");
+        Objects.requireNonNull(settings, "settings");
 
-        BukkitCraftingLib craftingLib = new BukkitCraftingLib(plugin);
+        BukkitCraftingLib craftingLib = new BukkitCraftingLib(plugin, settings);
         for (Listener listener : craftingLib.listeners) {
             plugin.getServer().getPluginManager().registerEvents(listener, plugin);
         }
@@ -142,6 +177,12 @@ public final class BukkitCraftingLib implements CraftingLib<ItemStack> {
                 : new UnsupportedRecipeRegistrar<>(unsupportedReason);
 
         return new SimpleRecipeManager<>(registrar);
+    }
+
+    private CraftingLibMetrics startMetrics(Plugin plugin, VersionAdapter versionAdapter) {
+        CraftingLibMetrics libraryMetrics = new CraftingLibMetrics(plugin);
+        MetricsCharts.register(libraryMetrics, versionAdapter.getName(), this.managersByType);
+        return libraryMetrics;
     }
 
     private RecipeBook createRecipeBook(Plugin plugin) {
@@ -198,17 +239,11 @@ public final class BukkitCraftingLib implements CraftingLib<ItemStack> {
 
     @Override
     public void shutdown() {
-        List<RecipeManager<?>> managers = Arrays.asList(
-                this.recipeManager,
-                this.smeltingManager,
-                this.brewingManager,
-                this.stonecuttingManager,
-                this.smithingManager,
-                this.anvilManager,
-                this.grindstoneManager
-        );
-
-        managers.forEach(RecipeManager::unregisterAll);
+        this.managersByType.values().forEach(RecipeManager::unregisterAll);
         this.listeners.forEach(HandlerList::unregisterAll);
+
+        if (this.metrics != null) {
+            this.metrics.shutdown();
+        }
     }
 }

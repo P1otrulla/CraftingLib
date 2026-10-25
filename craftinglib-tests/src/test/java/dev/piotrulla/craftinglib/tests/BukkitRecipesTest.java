@@ -8,6 +8,7 @@ import dev.piotrulla.craftinglib.recipe.RecipeMatch;
 import dev.piotrulla.craftinglib.recipe.ShapedCraftingRecipe;
 import dev.piotrulla.craftinglib.recipe.ShapelessCraftingRecipe;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -82,14 +83,36 @@ class BukkitRecipesTest {
     void shouldBuildGrindstoneRecipeFromMaterials() {
         GrindstoneRecipe<ItemStack> recipe = BukkitRecipes.grindstone("scrap-sword")
                 .withInput(Material.DIAMOND_SWORD)
-                .withSecondInput(Material.FLINT, 2)
+                .withSecondInput(Material.IRON_SWORD)
                 .withResult(Material.DIAMOND)
                 .withExperience(5)
                 .build();
 
-        assertTrue(recipe.matches(new ItemStack(Material.DIAMOND_SWORD), new ItemStack(Material.FLINT, 2)));
+        assertTrue(recipe.matches(new ItemStack(Material.DIAMOND_SWORD), new ItemStack(Material.IRON_SWORD)));
         assertFalse(recipe.matches(new ItemStack(Material.DIAMOND_SWORD), null));
         assertEquals(5, recipe.getExperience());
+    }
+
+    @Test
+    void shouldRejectGrindstoneInputsThatCannotBePlaced() {
+        assertThrows(IllegalArgumentException.class, () -> BukkitRecipes.grindstone("flint").withInput(Material.FLINT));
+        assertThrows(IllegalArgumentException.class, () -> BukkitRecipes.grindstone("second-flint")
+                .withSecondInput(Material.FLINT, 2));
+        assertThrows(IllegalArgumentException.class, () -> BukkitRecipes.grindstone("two-swords")
+                .withInput(Material.DIAMOND_SWORD, 2));
+    }
+
+    @Test
+    void shouldAcceptEnchantedGrindstoneInputs() {
+        ItemStack enchantedStick = new ItemStack(Material.STICK);
+        enchantedStick.addUnsafeEnchantment(Enchantment.KNOCKBACK, 2);
+
+        GrindstoneRecipe<ItemStack> recipe = BukkitRecipes.grindstone("enchanted-stick")
+                .withInput(enchantedStick)
+                .withResult(Material.STICK)
+                .build();
+
+        assertTrue(recipe.matches(enchantedStick, null));
     }
 
     @Test

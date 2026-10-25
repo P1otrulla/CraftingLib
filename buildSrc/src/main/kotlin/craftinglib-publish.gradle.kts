@@ -1,13 +1,9 @@
+// Maven publication to repo.eternalcode.pl (./gradlew publish) and ~/.m2 (./gradlew publishToMavenLocal).
+// Sources and javadoc jars come from craftinglib-java.
 plugins {
     `java-library`
     `maven-publish`
 }
-
-java {
-    withSourcesJar()
-    withJavadocJar()
-}
-
 
 publishing {
     publications {
@@ -17,7 +13,7 @@ publishing {
             pom {
                 name.set(project.name)
                 description.set(project.description)
-                url.set("github.com/P1otrulla/CraftingLib")
+                url.set("https://github.com/P1otrulla/CraftingLib")
 
                 licenses {
                     license {
@@ -30,7 +26,6 @@ publishing {
     }
 
     repositories {
-        mavenLocal()
         maven {
             name = "eternalcodeReleases"
             url = uri("https://repo.eternalcode.pl/releases")

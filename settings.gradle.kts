@@ -9,5 +9,6 @@ include(
     "craftinglib-core",
     "craftinglib-bukkit",
     "craftinglib-bukkit-okaeri-serdes",
-    "craftinglib-tests"
+    "craftinglib-tests",
+    "craftinglib-bukkit-example"
 )

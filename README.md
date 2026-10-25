@@ -1,4 +1,15 @@
-<img width="1280" height="640" alt="github-social-preview-1280x640" src="https://github.com/user-attachments/assets/a1a567e7-5096-4965-9918-91568982820e" />
+<p align="center">
+  <img src="assets/social-preview-1280x640.png" alt="CraftingLib" width="100%">
+</p>
+
+<p align="center">
+  <a href="https://modrinth.com/plugin/craftinglib"><img src="https://img.shields.io/badge/Modrinth-download-1bd96a?logo=modrinth&logoColor=white" alt="Modrinth"></a>
+  <a href="https://buymeacoffee.com/piotrulla"><img src="https://img.shields.io/badge/Buy%20Me%20a%20Coffee-support-ffdd00?logo=buymeacoffee&logoColor=black" alt="Buy Me a Coffee"></a>
+  <a href="https://bstats.org/plugin/bukkit/CraftingLib/34932"><img src="https://img.shields.io/badge/bStats-34932-blue" alt="bStats"></a>
+  <a href="COPYING.LESSER"><img src="https://img.shields.io/badge/license-LGPL--3.0-green" alt="License LGPL-3.0"></a>
+  <img src="https://img.shields.io/badge/Minecraft-1.8%2B-brightgreen" alt="Minecraft 1.8+">
+  <img src="https://img.shields.io/badge/Java-11%2B-orange" alt="Java 11+">
+</p>
 
 
 **Custom recipes for every station, on every Bukkit server from 1.8 to the latest Paper.**
@@ -6,7 +17,9 @@ Shaped and shapeless crafting, furnaces, brewing, stonecutter, smithing table, a
 matching, ingredient amounts, recipe book integration and okaeri-configs serialization. One API, and the version
 differences are handled for you.
 
-<!-- GIF: hero - a custom item crafted from a named/enchanted ingredient -> docs/gifs/hero.gif -->
+<p align="center">
+  <img src="assets/02_ruby_sword.gif" width="640" alt="Ruby sword crafted from custom rubies">
+</p>
 
 ```java
 this.craftingLib.getRecipeManager().registerRecipe(BukkitRecipes.shaped("super-pickaxe")
@@ -33,7 +46,11 @@ this.craftingLib.getRecipeManager().registerRecipe(BukkitRecipes.shaped("super-p
 - [Modules](#modules)
 - [How it works](#how-it-works)
 - [Limitations](#limitations)
+- [Showcase plugin](#showcase-plugin)
+- [Metrics](#metrics)
 - [Building](#building)
+- [Support](#support)
+- [License](#license)
 
 ---
 
@@ -49,8 +66,6 @@ this.craftingLib.getRecipeManager().registerRecipe(BukkitRecipes.shaped("super-p
 - **Version adapters**: capabilities are detected at runtime (class and method presence), not from version strings, so forks and backports work too.
 - **okaeri-configs**: every recipe type can be stored in and loaded from YAML.
 - **Fail-fast API**: immutable recipes, builders that validate early, and error messages that name the recipe key and the problem.
-
-<!-- GIF: recipe book autofill with an exact-match recipe -> docs/gifs/autofill.gif -->
 
 ---
 
@@ -218,7 +233,12 @@ These settings are shared by every builder:
 
 ### Shaped
 
-<!-- GIF: shaped recipe with amounts + shift-click -> docs/gifs/shaped.gif -->
+<table>
+  <tr>
+    <td align="center"><img src="assets/03_ruby_pickaxe.gif" width="420" alt="Ruby pickaxe - ingredient amounts"><br><sub>Ruby pickaxe - ingredient amounts</sub></td>
+    <td align="center"><img src="assets/04_ruby_axe_mirrored.gif" width="420" alt="Ruby axe - mirrored pattern"><br><sub>Ruby axe - mirrored pattern</sub></td>
+  </tr>
+</table>
 
 ```java
 BukkitRecipes.shaped("super-pickaxe")
@@ -246,9 +266,24 @@ BukkitRecipes.shapeless("quick-bread")
 
 Up to 9 ingredients, placed in any slots.
 
+<table>
+  <tr>
+    <td align="center"><img src="assets/06_bread_2_wheat.gif" width="420" alt="Bread from wheat with amounts"><br><sub>Bread from wheat with amounts</sub></td>
+    <td align="center"><img src="assets/07_ruby_shapeless_2x2.gif" width="420" alt="Shapeless 2x2 in the player inventory"><br><sub>Shapeless 2x2 in the player inventory</sub></td>
+  </tr>
+</table>
 ### Smelting (furnace, blast furnace, smoker, campfire)
 
-<!-- GIF: custom ore smelting in a blast furnace -> docs/gifs/smelting.gif -->
+<table>
+  <tr>
+    <td align="center"><img src="assets/13_ruby_ore_furnace.gif" width="420" alt="Furnace"><br><sub>Furnace</sub></td>
+    <td align="center"><img src="assets/14_ruby_ore_blast_furnace.gif" width="420" alt="Blast furnace"><br><sub>Blast furnace</sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="assets/15_jerky_smoker.gif" width="420" alt="Smoker"><br><sub>Smoker</sub></td>
+    <td align="center"><img src="assets/16_leather_campfire.gif" width="420" alt="Campfire"><br><sub>Campfire</sub></td>
+  </tr>
+</table>
 
 ```java
 BukkitRecipes.smelting("mithril-ingot")
@@ -264,7 +299,9 @@ The input amount must be 1. `replaceVanillaRecipes(true)` removes other recipes 
 
 ### Brewing (Paper)
 
-<!-- GIF: custom potion brewed from a custom ingredient -> docs/gifs/brewing.gif -->
+<p align="center">
+  <img src="assets/17_ruby_elixir_brewing.gif" width="420" alt="Ruby elixir brewed from a custom ingredient"><br><sub>Ruby elixir brewed from a custom ingredient</sub>
+</p>
 
 ```java
 BukkitRecipes.brewing("super-night-vision")
@@ -286,6 +323,12 @@ BukkitRecipes.stonecutting("cheap-bricks")
         .build();
 ```
 
+<table>
+  <tr>
+    <td align="center"><img src="assets/09_redstone_stonecutter.gif" width="420" alt="Redstone in the stonecutter"><br><sub>Redstone in the stonecutter</sub></td>
+    <td align="center"><img src="assets/10_stone_bricks_stonecutter.gif" width="420" alt="Grouped stone bricks"><br><sub>Grouped stone bricks</sub></td>
+  </tr>
+</table>
 ### Smithing table (1.16+)
 
 ```java
@@ -297,9 +340,15 @@ BukkitRecipes.smithing("mithril-sword")
         .build();
 ```
 
+<p align="center">
+  <img src="assets/08_ruby_blade_smithing.gif" width="420" alt="Ruby blade on the smithing table"><br><sub>Ruby blade on the smithing table</sub>
+</p>
+
 ### Anvil (1.11+)
 
-<!-- GIF: anvil recipe taking levels -> docs/gifs/anvil.gif -->
+<p align="center">
+  <img src="assets/18_sharpened_sword_anvil.gif" width="420" alt="Sharpened sword - anvil recipe taking levels"><br><sub>Sharpened sword - anvil recipe taking levels</sub>
+</p>
 
 ```java
 BukkitRecipes.anvil("sharpen-sword")
@@ -314,18 +363,24 @@ The level cost is checked and taken from the player; creative players craft for 
 
 ### Grindstone (1.19.3+)
 
-<!-- GIF: grindstone recipe giving experience -> docs/gifs/grindstone.gif -->
+<table>
+  <tr>
+    <td align="center"><img src="assets/11_grindstone_ruby_sword.gif" width="420" alt="Ruby sword scrapped on the grindstone"><br><sub>Ruby sword scrapped on the grindstone</sub></td>
+    <td align="center"><img src="assets/12_grindstone_diamond.gif" width="420" alt="Diamond sword to diamonds"><br><sub>Diamond sword to diamonds</sub></td>
+  </tr>
+</table>
 
 ```java
 BukkitRecipes.grindstone("scrap-sword")
         .withInput(Material.DIAMOND_SWORD)
-        .withSecondInput(Material.FLINT, 2)   // optional; without it the other slot must be empty
+        .withSecondInput(Material.IRON_SWORD) // optional; without it the other slot must be empty
         .withResult(Material.DIAMOND, 2)
         .withExperience(10)                   // default 0
         .build();
 ```
 
 The inputs can go in either grindstone slot. Their amounts are consumed and the experience goes to the player.
+Grindstone slots only accept **damageable** (tools, weapons, armor) or **enchanted** items (including enchanted books), so the builder rejects other inputs with `IllegalArgumentException`.
 
 ---
 
@@ -361,7 +416,9 @@ BukkitRecipes.shapeless("reforge")
 
 ## Recipe book
 
-<!-- GIF: new recipe unlocked toast + grouped entry in the recipe book -> docs/gifs/recipe-book.gif -->
+<p align="center">
+  <img src="assets/01_ruby_axe.gif" width="420" alt="Recipe book autofill with exact items"><br><sub>Recipe book autofill with exact items</sub>
+</p>
 
 ```java
 BukkitRecipes.shaped("ruby-helmet")
@@ -383,6 +440,10 @@ BukkitRecipes.shaped("ruby-helmet")
 ---
 
 ## Replacing vanilla recipes
+
+<p align="center">
+  <img src="assets/05_torch.gif" width="420" alt="Vanilla torch recipe replaced, in the table and 2x2 grid"><br><sub>Vanilla torch recipe replaced, in the table and 2x2 grid</sub>
+</p>
 
 `replaceVanillaRecipes(true)` means different things per station:
 
@@ -476,6 +537,7 @@ A missing required field fails with a clear message, e.g. `Recipe 'sharpen' is m
 | `craftinglib-bukkit` | `BukkitCraftingLib`, `BukkitRecipes`, version adapters, listeners, recipe book | core, paper-api (compileOnly) |
 | `craftinglib-bukkit-okaeri-serdes` | serializers for every recipe type, `CraftingLibSerdesPack` | bukkit, okaeri-configs |
 | `craftinglib-tests` | MockBukkit integration tests (not published, Java 17) | everything |
+| `craftinglib-bukkit-example` | Showcase plugin with every recipe type (not published) | bukkit, okaeri-serdes |
 
 The core is generic over the item type (`ItemAdapter<T>`), so another platform only needs an adapter, concrete
 builders and a `PlatformRecipeRegistrar`.
@@ -499,9 +561,46 @@ builders and a `PlatformRecipeRegistrar`.
 - **Crafting remainders**: only `*_BUCKET` → `BUCKET`.
 - **Crafter**: only recipes consuming 1 item per slot; others are cancelled.
 - **Anvil**: anvil damage is not simulated.
+- **Grindstone**: inputs must be damageable or enchanted items (the builder enforces it), the client does not let other items into the slots.
 - **Threading**: not thread-safe, so register recipes on the main thread.
 
 ---
+
+## Showcase plugin
+
+`craftinglib-bukkit-example` registers a recipe for every station: ruby tools with amounts, mirroring and
+`PERSISTENT_DATA`, 2x2 recipes, replaced vanilla torches, all four cooking stations, a brewing elixir, stonecutter,
+smithing, anvil, grindstone, and recipes loaded from `recipes.yml`.
+
+```
+./gradlew :craftinglib-bukkit-example:runServer
+```
+
+This downloads Paper, starts a local test server with the plugin and accepts the Minecraft EULA for that server.
+In game, `/showcase` opens a menu with every station and its recipes (described straight from the recipe objects;
+left click shows recipes, right click gives the kit). `/showcase <kit>` gives the ingredients for one station (`crafting`, `smelting`, `brewing`,
+`stonecutting`, `smithing`, `anvil`, `grindstone`, `config`), and `/showcase all` gives everything.
+
+---
+
+## Metrics
+
+CraftingLib reports anonymous usage statistics to [bStats](https://bstats.org/plugin/bukkit/CraftingLib/34932):
+library version, detected version adapter, number of registered recipes and recipe types in use.
+The bStats client is embedded and relocated inside the library, so it never clashes with the bStats copy
+shaded into your own plugin.
+
+Opting out:
+
+- **Plugin developers** - disable it when creating the library:
+
+  ```java
+  BukkitCraftingLib craftingLib = BukkitCraftingLib.create(this, CraftingLibSettings.builder()
+      .metrics(false)
+      .build());
+  ```
+
+- **Server owners** - set `enabled: false` in `plugins/bStats/config.yml` (disables bStats for every plugin).
 
 ## Building
 
@@ -518,6 +617,14 @@ Build logic lives in `buildSrc` convention plugins (`craftinglib-java`, `craftin
 `craftinglib-junit`, `craftinglib-publish`), so each module pulls only the repositories and dependencies it needs.
 Versions are defined in `buildSrc/src/main/kotlin/Versions.kt`.
 
+## Support
+
+If CraftingLib saves you time, you can support its development:
+
+<a href="https://buymeacoffee.com/piotrulla"><img src="https://img.shields.io/badge/Buy%20Me%20a%20Coffee-support-ffdd00?logo=buymeacoffee&logoColor=black&style=for-the-badge" alt="Buy Me a Coffee"></a>
+
+The showcase plugin is also available on [Modrinth](https://modrinth.com/plugin/craftinglib).
+
 ## License
 
 Copyright (C) 2026 PIOTRULLA
@@ -530,3 +637,6 @@ In short:
 - **You can** use CraftingLib in any plugin, open or closed source, free or paid, and shade it into your jar.
 - **You must** keep the license notice, and publish the source of your **changes to CraftingLib itself** under the LGPL-3.0 if you distribute them.
 - Your own plugin code that only uses the library stays under whatever license you choose.
+
+The embedded bStats client (`dev.piotrulla.craftinglib.bukkit.metrics.bstats`) is licensed under the MIT license,
+see `META-INF/LICENSE-bStats`.

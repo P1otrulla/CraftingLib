@@ -5,3 +5,6 @@ buildSrc/build/
 .idea/
 *.iml
 out/
+
+# run-paper test server
+run/
