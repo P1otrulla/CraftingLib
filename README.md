@@ -308,10 +308,10 @@ The input amount must be 1. `replaceVanillaRecipes(true)` removes other recipes 
 </p>
 
 ```java
-BukkitRecipes.brewing("super-night-vision")
-        .withInput(nightVisionPotion)
-        .withIngredient(Material.GLOW_BERRIES)
-        .withResult(superNightVisionPotion)
+BukkitRecipes.brewing("ruby-elixir")
+        .withInput(this.items.awkwardPotion())
+        .withIngredient(this.items.ruby())
+        .withResult(this.items.rubyPotion())
         .build();
 ```
 
@@ -320,10 +320,9 @@ Registered as a Paper `PotionMix`. Input and ingredient amounts must be 1. Brewi
 ### Stonecutter (1.14+)
 
 ```java
-BukkitRecipes.brewing("ruby-elixir")
-        .withInput(this.items.awkwardPotion())
-        .withIngredient(this.items.ruby())
-        .withResult(this.items.rubyPotion())
+BukkitRecipes.stonecutting("cheap-bricks")
+        .withInput(Material.STONE)
+        .withResult(Material.STONE_BRICKS)
         .build();
 ```
 
